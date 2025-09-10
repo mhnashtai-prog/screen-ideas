@@ -376,7 +376,7 @@
       padding: 8px 16px;
       font-weight: 600;
       font-size: 0.9rem;
-      color: var(--accent-lime);
+      color: var(--intuity-blend);
     }
 
     .check-answers-btn {
@@ -864,6 +864,162 @@
         userAnswers[q] === correctAnswers[q]
       ).length;
       
+      scoreDisplay.textContent = `Score: ${correctCount}/${totalQuestions}`;
+    }
+
+    // Check answers
+    function checkAnswers() {
+      answersChecked = true;
+      checkAnswersBtn.disabled = true;
+      checkAnswersBtn.textContent = 'Answers Checked';
+      
+      // Mark all options
+      for (let questionNum = 7; questionNum <= 14; questionNum++) {
+        const questionSlide = document.querySelector(`[data-question="${questionNum}"]`).closest('.question-slide');
+        const options = questionSlide.querySelectorAll('.option');
+        
+        options.forEach(option => {
+          const optionLetter = option.getAttribute('data-option');
+          const isCorrect = optionLetter === correctAnswers[questionNum];
+          const wasSelected = userAnswers[questionNum] === optionLetter;
+          
+          if (isCorrect) {
+            option.classList.add('correct');
+          } else if (wasSelected && !isCorrect) {
+            option.classList.add('incorrect');
+          }
+        });
+      }
+      
+      // Highlight text passages (example)
+      highlightTextPassages();
+      
+      // Final score update
+      updateScore();
+    }
+
+    // Highlight text passages where answers were found
+    function highlightTextPassages() {
+      // Example highlighting for demonstration
+      const readingContent = document.querySelector('.reading-content');
+      const paragraphs = readingContent.querySelectorAll('.reading-paragraph');
+      
+      // Highlight key phrases that relate to answers
+      if (paragraphs.length > 1) {
+        const paragraph2 = paragraphs[1];
+        paragraph2.innerHTML = paragraph2.innerHTML.replace(
+          'fast-decreasing sense of his own worth',
+          '<span class="highlighted-text">fast-decreasing sense of his own worth</span>'
+        );
+      }
+      
+      if (paragraphs.length > 2) {
+        const paragraph3 = paragraphs[2];
+        paragraph3.innerHTML = paragraph3.innerHTML.replace(
+          'keep it going for her two sons',
+          '<span class="highlighted-text">keep it going for her two sons</span>'
+        );
+      }
+    }
+
+    // Touch handling for question swiping
+    function handleStart(e) {
+      isDragging = true;
+      startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+      questionTrack.classList.add('dragging');
+    }
+
+    function handleMove(e) {
+      if (!isDragging) return;
+      
+      e.preventDefault();
+      const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+      const deltaX = currentX - startX;
+      const currentTranslate = -currentQuestion * (100 / totalQuestions);
+      const dragPercent = (deltaX / questionContainer.offsetWidth) * 12.5; // 12.5% per slide
+      
+      questionTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
+    }
+
+    function handleEnd(e) {
+      if (!isDragging) return;
+      
+      isDragging = false;
+      questionTrack.classList.remove('dragging');
+      
+      const endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
+      const deltaX = endX - startX;
+      const threshold = 50;
+      
+      if (Math.abs(deltaX) > threshold) {
+        if (deltaX > 0 && currentQuestion > 0) {
+          // Swipe right - previous question
+          goToQuestion(currentQuestion - 1);
+        } else if (deltaX < 0 && currentQuestion < totalQuestions - 1) {
+          // Swipe left - next question
+          goToQuestion(currentQuestion + 1);
+        } else {
+          updateQuestion();
+        }
+      } else {
+        updateQuestion();
+      }
+    }
+
+    // Event listeners
+    function setupEventListeners() {
+      // Option selection
+      document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+          const questionNum = option.getAttribute('data-question');
+          const optionLetter = option.getAttribute('data-option');
+          selectOption(questionNum, optionLetter);
+        });
+      });
+      
+      // Question indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => goToQuestion(index));
+      });
+      
+      // Check answers button
+      checkAnswersBtn.addEventListener('click', checkAnswers);
+      
+      // Touch events for question swiping
+      questionContainer.addEventListener('touchstart', handleStart, { passive: false });
+      questionContainer.addEventListener('touchmove', handleMove, { passive: false });
+      questionContainer.addEventListener('touchend', handleEnd, { passive: false });
+      
+      // Mouse events (for desktop testing)
+      questionContainer.addEventListener('mousedown', handleStart);
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      
+      // Prevent context menu
+      questionContainer.addEventListener('contextmenu', e => e.preventDefault());
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+          goToQuestion(currentQuestion - 1);
+        } else if (e.key === 'ArrowRight' && currentQuestion < totalQuestions - 1) {
+          goToQuestion(currentQuestion + 1);
+        } else if (e.key >= '1' && e.key <= '8') {
+          goToQuestion(parseInt(e.key) - 1);
+        }
+      });
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      createConstellation();
+      setupEventListeners();
+      updateQuestion();
+      updateScore();
+    });
+  </script>
+</body>
+</html>
       scoreDisplay.textContent = `Score: ${correctCount}/${totalQuestions}`;
     }
 
