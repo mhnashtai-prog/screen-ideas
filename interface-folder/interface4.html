@@ -1,1 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INTUITY - Invisible Giants</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <style>
+    :root {
+      --bg-primary: #0f1419;
+      --bg-secondary: #1a2332;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.4);
+      --accent-subtle: rgba(255, 255, 255, 0.03);
+      --accent-whisper: rgba(255, 255, 255, 0.06);
+      --accent-breath: rgba(255, 255, 255, 0.1);
+      --accent-gold: #ffd54f;
+      --accent-lime: #32d74b;
+      --shadow-subtle: 0 2px 20px rgba(0, 0, 0, 0.1);
+      --shadow-whisper: 0 4px 40px rgba(0, 0, 0, 0.05);
+      --blur-subtle: blur(10px);
+      --transition-ghost: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+      --transition-breath: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* Invisible Constellation - Only Appears on Deep Focus */
+    .ambient-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .ambient-particles.focused {
+      opacity: 0.1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      animation: drift 20s infinite linear;
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+    }
+
+    /* Ultra-Minimal Header - Barely There */
+    .presence {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 20, 25, 0.7);
+      backdrop-filter: var(--blur-subtle);
+      border-bottom: 1px solid var(--accent-subtle);
+      padding: 1rem 0;
+      text-align: center;
+      transition: var(--transition-ghost);
+    }
+
+    .identity {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      transition: var(--transition-ghost);
+    }
+
+    .identity:hover {
+      color: var(--text-primary);
+      letter-spacing: 0.15em;
+    }
+
+    .nav-links {
+      margin-top: 0.5rem;
+      opacity: 0;
+      transition: var(--transition-ghost);
+    }
+
+    .presence:hover .nav-links {
+      opacity: 1;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      margin: 0 1rem;
+      transition: var(--transition-breath);
+    }
+
+    .nav-link:hover {
+      color: var(--accent-gold);
+    }
+
+    /* The Sacred Text - Center of Everything */
+    .sacred-space {
+      max-width: 700px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      position: relative;
+    }
+
+    .text-vessel {
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-whisper);
+      border-radius: 1rem;
+      padding: 3rem;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      text-align: center;
+      transition: var(--transition-ghost);
+      position: relative;
+    }
+
+    .text-vessel:hover {
+      background: var(--accent-whisper);
+      border-color: var(--accent-breath);
+    }
+
+    .text-focus {
+      cursor: text;
+      user-select: text;
+      position: relative;
+    }
+
+    .text-focus.selected {
+      background: linear-gradient(135deg, var(--accent-lime), transparent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Invisible Helpers - The Hidden Giants */
+    .ghost-helpers {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .helper-zone {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-ghost);
+    }
+
+    .helper-zone.summoned {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Translation Helper - Top */
+    .translation-spirit {
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      background: var(--accent-whisper);
+      backdrop-filter: var(--blur-subtle);
+      border: 1px solid var(--accent-breath);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-whisper);
+    }
+
+    /* Vocabulary Helper - Right */
+    .vocabulary-spirit {
+      top: 50%;
+      right: 5%;
+      transform: translateY(-50%);
+      width: 300px;
+      background: var(--accent-whisper);
+      backdrop-filter: var(--blur-subtle);
+      border: 1px solid var(--accent-breath);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-whisper);
+    }
+
+    /* Notes Helper - Left */
+    .notes-spirit {
+      top: 50%;
+      left: 5%;
+      transform: translateY(-50%);
+      width: 300px;
+      background: var(--accent-whisper);
+      backdrop-filter: var(--blur-subtle);
+      border: 1px solid var(--accent-breath);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-whisper);
+    }
+
+    /* AI Helper - Bottom */
+    .ai-spirit {
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      background: var(--accent-whisper);
+      backdrop-filter: var(--blur-subtle);
+      border: 1px solid var(--accent-breath);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-whisper);
+    }
+
+    /* Helper Content Styling */
+    .spirit-header {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    .spirit-input {
+      width: 100%;
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-whisper);
+      border-radius: 0.5rem;
+      padding: 0.8rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 60px;
+      transition: var(--transition-breath);
+    }
+
+    .spirit-input:focus {
+      outline: none;
+      border-color: var(--accent-breath);
+      background: var(--accent-whisper);
+    }
+
+    .spirit-input::placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .spirit-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .spirit-btn {
+      flex: 1;
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-whisper);
+      border-radius: 0.5rem;
+      padding: 0.6rem;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-breath);
+    }
+
+    .spirit-btn:hover {
+      background: var(--accent-whisper);
+      color: var(--text-primary);
+      border-color: var(--accent-breath);
+    }
+
+    .spirit-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--accent-subtle);
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .spirit-result.visible {
+      display: block;
+      animation: breathe-in 0.8s ease;
+    }
+
+    @keyframes breathe-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Invisible Triggers - Only Felt, Never Seen */
+    .invisible-trigger {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--transition-breath);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .invisible-trigger:hover {
+      opacity: 0.3;
+      background: var(--accent-whisper);
+    }
+
+    .invisible-trigger.active {
+      opacity: 0.6;
+      background: var(--accent-breath);
+      color: var(--accent-gold);
+    }
+
+    .trigger-translate { top: 10%; right: 10%; }
+    .trigger-vocab { top: 50%; right: 5%; transform: translateY(-50%); }
+    .trigger-notes { top: 50%; left: 5%; transform: translateY(-50%); }
+    .trigger-ai { bottom: 10%; left: 50%; transform: translateX(-50%); }
+
+    /* Question Interface - Invisible Until Needed */
+    .question-realm {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--accent-whisper);
+      backdrop-filter: var(--blur-subtle);
+      border-top: 1px solid var(--accent-breath);
+      padding: 1rem;
+      transform: translateY(100%);
+      transition: var(--transition-ghost);
+      z-index: 500;
+    }
+
+    .question-realm.visible {
+      transform: translateY(0);
+    }
+
+    .question-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .question-text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .option {
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-whisper);
+      border-radius: 0.5rem;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition-breath);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .option:hover {
+      background: var(--accent-whisper);
+      border-color: var(--accent-breath);
+    }
+
+    .option-label {
+      background: var(--accent-whisper);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.75rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .option.selected {
+      background: var(--accent-breath);
+      border-color: var(--accent-lime);
+      color: var(--text-primary);
+    }
+
+    .option.selected .option-label {
+      background: var(--accent-lime);
+      color: #000;
+    }
+
+    /* Focus Detection System */
+    .focus-detector {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 768px) {
+      .sacred-space {
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .text-vessel {
+        padding: 2rem;
+        font-size: 1rem;
+      }
+
+      .translation-spirit,
+      .ai-spirit {
+        width: 90vw;
+        left: 5vw;
+        transform: none;
+      }
+
+      .vocabulary-spirit,
+      .notes-spirit {
+        width: 85vw;
+        left: 7.5vw;
+        transform: none;
+        top: auto;
+        bottom: 20%;
+      }
+
+      .invisible-trigger {
+        width: 80px;
+        height: 80px;
+        opacity: 0.1;
+      }
+    }
+
+    /* Advanced Text Selection Highlighting */
+    ::selection {
+      background: rgba(50, 215, 75, 0.2);
+      color: var(--text-primary);
+    }
+
+    ::-moz-selection {
+      background: rgba(50, 215, 75, 0.2);
+      color: var(--text-primary);
+    }
+
+    /* Breathing Animation for Deep Focus */
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .deep-focus {
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    /* Cursor States */
+    .text-vessel:hover {
+      cursor: text;
+    }
+
+    .helper-zone {
+      cursor: default;
+    }
+
+    /* Ultra-Subtle Accessibility */
+    .invisible-trigger:focus {
+      opacity: 0.5;
+      outline: 1px solid var(--accent-breath);
+    }
+
+    .spirit-input:focus,
+    .spirit-btn:focus,
+    .option:focus {
+      outline: 1px solid var(--accent-breath);
+      outline-offset: 2px;
+    }
+
+    /* Minimalist Footer - Invisible Until Needed */
+    .essence {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: var(--transition-ghost);
+      pointer-events: none;
+    }
+
+    .essence.visible {
+      opacity: 0.3;
+    }
+
+    .essence:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-particles" id="particles"></div>
+  <div class="focus-detector" id="focusDetector"></div>
+
+  <header class="presence">
+    <div class="identity">INTUITY</div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">home</a>
+      <a href="index.html" class="nav-link">back</a>
+    </div>
+  </header>
+
+  <main class="sacred-space">
+    <div class="text-vessel" id="textVessel">
+      <div class="text-focus" id="paragraph1">
+        The rapid advancement of digital technology has fundamentally transformed the landscape of education in the 21st century.
+      </div>
+      <br><br>
+      <div class="text-focus" id="paragraph2">
+        Educational institutions worldwide have embraced various forms of technology integration, from simple presentation tools to sophisticated learning systems.
+      </div>
+      <br><br>
+      <div class="text-focus" id="paragraph3">
+        However, the shift to digital education is not without its challenges.
+      </div>
+      <br><br>
+      <div class="text-focus" id="paragraph4">
+        Despite these concerns, research suggests that when properly implemented, digital tools can enhance learning outcomes significantly.
+      </div>
+    </div>
+  </main>
+
+  <!-- Invisible Helpers - The Hidden Giants -->
+  <div class="ghost-helpers">
+    <!-- Translation Spirit -->
+    <div class="helper-zone translation-spirit" id="translationSpirit">
+      <div class="spirit-header">Translation</div>
+      <textarea class="spirit-input" placeholder="Selected text appears here..."></textarea>
+      <div class="spirit-actions">
+        <button class="spirit-btn" onclick="translateText()">Translate</button>
+        <button class="spirit-btn" onclick="detectLanguage()">Detect</button>
+      </div>
+      <div class="spirit-result" id="translationResult"></div>
+    </div>
+
+    <!-- Vocabulary Spirit -->
+    <div class="helper-zone vocabulary-spirit" id="vocabularySpirit">
+      <div class="spirit-header">Vocabulary</div>
+      <textarea class="spirit-input" placeholder="Word or phrase..."></textarea>
+      <div class="spirit-actions">
+        <button class="spirit-btn" onclick="defineWord()">Define</button>
+        <button class="spirit-btn" onclick="addToVocab()">Save</button>
+      </div>
+      <div class="spirit-result" id="vocabularyResult"></div>
+    </div>
+
+    <!-- Notes Spirit -->
+    <div class="helper-zone notes-spirit" id="notesSpirit">
+      <div class="spirit-header">Notes</div>
+      <textarea class="spirit-input" placeholder="Your insights..."></textarea>
+      <div class="spirit-actions">
+        <button class="spirit-btn" onclick="saveNote()">Save</button>
+        <button class="spirit-btn" onclick="summarize()">Summarize</button>
+      </div>
+      <div class="spirit-result" id="notesResult"></div>
+    </div>
+
+    <!-- AI Spirit -->
+    <div class="helper-zone ai-spirit" id="aiSpirit">
+      <div class="spirit-header">AI Assistant</div>
+      <textarea class="spirit-input" placeholder="Ask about the text..."></textarea>
+      <div class="spirit-actions">
+        <button class="spirit-btn" onclick="askAI()">Analyze</button>
+        <button class="spirit-btn" onclick="explainContext()">Explain</button>
+      </div>
+      <div class="spirit-result" id="aiResult"></div>
+    </div>
+
+    <!-- Invisible Triggers -->
+    <div class="invisible-trigger trigger-translate" onclick="toggleSpirit('translation')" title="Translation">
+      <i class="fas fa-language"></i>
+    </div>
+    <div class="invisible-trigger trigger-vocab" onclick="toggleSpirit('vocabulary')" title="Vocabulary">
+      <i class="fas fa-book"></i>
+    </div>
+    <div class="invisible-trigger trigger-notes" onclick="toggleSpirit('notes')" title="Notes">
+      <i class="fas fa-pen"></i>
+    </div>
+    <div class="invisible-trigger trigger-ai" onclick="toggleSpirit('ai')" title="AI Assistant">
+      <i class="fas fa-brain"></i>
+    </div>
+  </div>
+
+  <!-- Question Interface - Hidden Until Needed -->
+  <div class="question-realm" id="questionRealm">
+    <div class="question-content">
+      <div class="question-text" id="questionText">
+        What has fundamentally transformed the landscape of education?
+      </div>
+      <div class="options-grid" id="optionsGrid">
+        <div class="option" onclick="selectOption(0)">
+          <span class="option-label">A</span>
+          <span>Traditional teaching methods</span>
+        </div>
+        <div class="option" onclick="selectOption(1)">
+          <span class="option-label">B</span>
+          <span>Digital technology advancement</span>
+        </div>
+        <div class="option" onclick="selectOption(2)">
+          <span class="option-label">C</span>
+          <span>Educational reforms</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="essence" id="essence">by Majid Nashtai</div>
+
+  <script>
+    // Global State - Minimal and Clean
+    let selectedText = '';
+    let activeSpirits = new Set();
+    let focusLevel = 0;
+    let currentQuestion = 0;
+    let userAnswers = {};
+
+    // Ambient Particle System
+    function createAmbientParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    // Invisible Spirit Management
+    function toggleSpirit(type) {
+      const spirit = document.getElementById(`${type}Spirit`);
+      const trigger = document.querySelector(`.trigger-${type}`);
+      
+      if (activeSpirits.has(type)) {
+        hideSpirit(type);
+      } else {
+        showSpirit(type);
+      }
+    }
+
+    function showSpirit(type) {
+      const spirit = document.getElementById(`${type}Spirit`);
+      const trigger = document.querySelector(`.trigger-${type}`);
+      const input = spirit.querySelector('.spirit-input');
+      
+      spirit.classList.add('summoned');
+      trigger.classList.add('active');
+      activeSpirits.add(type);
+      
+      // Auto-fill with selected text if available
+      if (selectedText && input) {
+        input.value = selectedText;
+      }
+      
+      // Focus input after animation
+      setTimeout(() => {
+        input.focus();
+      }, 300);
+    }
+
+    function hideSpirit(type) {
+      const spirit = document.getElementById(`${type}Spirit`);
+      const trigger = document.querySelector(`.trigger-${type}`);
+      
+      spirit.classList.remove('summoned');
+      trigger.classList.remove('active');
+      activeSpirits.delete(type);
+    }
+
+    // Intelligent Text Selection
+    function handleTextSelection() {
+      const selection = window.getSelection();
+      selectedText = selection.toString().trim();
+      
+      if (selectedText.length > 0) {
+        // Highlight selected paragraph
+        const paragraphs = document.querySelectorAll('.text-focus');
+        paragraphs.forEach(p => p.classList.remove('selected'));
+        
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const paragraph = container.nodeType === Node.TEXT_NODE 
+          ? container.parentElement 
+          : container;
+        
+        if (paragraph.classList.contains('text-focus')) {
+          paragraph.classList.add('selected');
+          
+          // Auto-suggest appropriate helper
+          if (selectedText.length > 50) {
+            // Long text - suggest AI or translation
+            setTimeout(() => showSpirit('ai'), 500);
+          } else if (selectedText.split(' ').length === 1) {
+            // Single word - suggest vocabulary
+            setTimeout(() => showSpirit('vocabulary'), 500);
+          }
+        }
+      }
+    }
+
+    // Focus Detection System
+    let focusTimeout;
+    function detectFocus() {
+      focusLevel++;
+      
+      if (focusLevel === 3) {
+        document.getElementById('particles').classList.add('focused');
+        document.getElementById('textVessel').classList.add('deep-focus');
+      }
+      
+      if (focusLevel === 5) {
+        document.getElementById('essence').classList.add('visible');
+      }
+      
+      if (focusLevel === 8) {
+        showQuestionInterface();
+      }
+      
+      clearTimeout(focusTimeout);
+      focusTimeout = setTimeout(() => {
+        focusLevel = Math.max(0, focusLevel - 1);
+        if (focusLevel < 3) {
+          document.getElementById('particles').classList.remove('focused');
+          document.getElementById('textVessel').classList.remove('deep-focus');
+        }
+      }, 3000);
+    }
+
+    // Question Interface
+    function showQuestionInterface() {
+      document.getElementById('questionRealm').classList.add('visible');
+    }
+
+    function hideQuestionInterface() {
+      document.getElementById('questionRealm').classList.remove('visible');
+    }
+
+    function selectOption(index) {
+      const options = document.querySelectorAll('.option');
+      options.forEach((opt, i) => {
+        opt.classList.toggle('selected', i === index);
+      });
+      
+      userAnswers[currentQuestion] = index;
+      
+      // Auto-hide after selection
+      setTimeout(() => {
+        hideQuestionInterface();
+      }, 1500);
+    }
+
+    // Helper Functions
+    function translateText() {
+      const result = document.getElementById('translationResult');
+      result.innerHTML = `
+        <strong>Translation:</strong><br>
+        Spanish: La tecnología digital ha transformado fundamentalmente...<br>
+        French: La technologie numérique a fondamentalement transformé...
+      `;
+      result.classList.add('visible');
+    }
+
+    function detectLanguage() {
+      const result = document.getElementById('translationResult');
+      result.innerHTML = `
+        <strong>Language:</strong> English (99% confidence)<br>
+        <strong>Dialect:</strong> American English
+      `;
+      result.classList.add('visible');
+    }
+
+    function defineWord() {
+      const result = document.getElementById('vocabularyResult');
+      result.innerHTML = `
+        <strong>Definition:</strong> The application of scientific knowledge for practical purposes.<br>
+        <strong>Etymology:</strong> Greek <em>tekhnologia</em> (systematic treatment)
+      `;
+      result.classList.add('visible');
+    }
+
+    function addToVocab() {
+      const result = document.getElementById('vocabularyResult');
+      result.innerHTML = `
+        <strong>Added to vocabulary!</strong><br>
+        Total words: 1,247
+      `;
+      result.classList.add('visible');
+    }
+
+    function saveNote() {
+      const result = document.getElementById('notesResult');
+      result.innerHTML = `
+        <strong>Note saved!</strong><br>
+        Added to your collection with timestamp.
+      `;
+      result.classList.add('visible');
+    }
+
+    function summarize() {
+      const result = document.getElementById('notesResult');
+      result.innerHTML = `
+        <strong>Summary:</strong><br>
+        Digital transformation in education brings both opportunities and challenges, requiring thoughtful implementation.
+      `;
+      result.classList.add('visible');
+    }
+
+    function askAI() {
+      const result = document.getElementById('aiResult');
+      result.innerHTML = `
+        <strong>Analysis:</strong><br>
+        This passage presents a balanced view of educational technology, acknowledging both progress and challenges while emphasizing the importance of proper implementation.
+      `;
+      result.classList.add('visible');
+    }
+
+    function explainContext() {
+      const result = document.getElementById('aiResult');
+      result.innerHTML = `
+        <strong>Context:</strong><br>
+        The text follows a problem-solution structure, introducing digital transformation, presenting challenges, then offering evidence for positive outcomes.
+      `;
+      result.classList.add('visible');
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      createAmbientParticles();
+      
+      // Text selection handler
+      document.addEventListener('mouseup', handleTextSelection);
+      document.addEventListener('touchend', handleTextSelection);
+      
+      // Focus detection
+      document.addEventListener('click', detectFocus);
+      document.addEventListener('scroll', detectFocus);
+      document.addEventListener('keydown', detectFocus);
+      
+      // Keyboard shortcuts for giants
+      document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key >= '1' && e.key <= '4') {
+          const spirits = ['translation', 'vocabulary', 'notes', 'ai'];
+          toggleSpirit(spirits[parseInt(e.key) - 1]);
+        }
+        
+        if (e.key === 'Escape') {
+          activeSpirits.forEach(spirit => hideSpirit(spirit));
+          hideQuestionInterface();
+        }
+        
+        if (e.key === '?' && e.shiftKey) {
+          showQuestionInterface();
+        }
+      });
+      
+      // Auto-hide spirits when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.helper-zone') && 
+            !e.target.closest('.invisible-trigger')) {
+          // Don't auto-hide on first click, only after spirits are active
+          if (activeSpirits.size > 0 && focusLevel > 5) {
+            setTimeout(() => {
+              activeSpirits.forEach(spirit => hideSpirit(spirit));
+            }, 2000);
+          }
+        }
+      });
+    });
+
+    // Progressive Enhancement for Giants
+    let giantMode = false;
+    document.addEventListener('keydown', (e) => {
+      // Secret giant mode activation
+      if (e.ctrlKey && e.shiftKey && e.key === 'G') {
+        giantMode = !giantMode;
+        
+        if (giantMode) {
+          document.querySelectorAll('.invisible-trigger').forEach(trigger => {
+            trigger.style.opacity = '0.2';
+          });
+          document.getElementById('essence').classList.add('visible');
+          console.log('🔥 Giant mode activated');
+        } else {
+          document.querySelectorAll('.invisible-trigger').forEach(trigger => {
+            trigger.style.opacity = '0';
+          });
+          console.log('🌊 Minimal mode restored');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
