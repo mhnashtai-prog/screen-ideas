@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTUITY - Enhanced Floating Interface</title>
+  <title>INTUITY - Simple Swipe Interface</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,22 +17,14 @@
       --accent-teal: #2dd4bf;
       --accent-lime: #32d74b;
       --accent-orange: #ff9500;
-      --accent-brick: #c44536;
       --accent-purple: #8b5cf6;
-      --accent-pink: #ec4899;
       --text-primary: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.7);
       --text-muted: rgba(255, 255, 255, 0.5);
       --intuity-gold: #ffd54f;
       --intuity-teal: #26a69a;
-      --space-xs: 0.25rem;
-      --space-sm: 0.5rem;
-      --space-md: 1rem;
-      --space-lg: 1.5rem;
-      --space-xl: 2rem;
       --blur: blur(20px);
       --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --box-shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1);
     }
 
     * {
@@ -140,27 +130,59 @@
       margin-bottom: 8px;
     }
 
+    .author-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 0.25rem;
+    }
+
     .author-credit {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       font-weight: 300;
     }
 
-    /* Main Content Container */
+    .nav-btn {
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent-teal);
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
     .main-container {
       max-width: 600px;
       margin: 0 auto;
-      padding: var(--space-xl);
+      padding: 2rem;
       position: relative;
       z-index: 10;
+      min-height: 60vh;
     }
 
     .text-display-container {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--card-border);
       border-radius: 1rem;
-      padding: var(--space-xl);
-      margin-bottom: var(--space-xl);
+      padding: 2rem;
+      margin-bottom: 2rem;
       line-height: 1.8;
       font-size: 1.05rem;
       box-shadow: var(--shadow);
@@ -169,7 +191,7 @@
     }
 
     .text-paragraph {
-      margin-bottom: var(--space-lg);
+      margin-bottom: 1.5rem;
     }
 
     .text-highlight {
@@ -180,237 +202,218 @@
       font-weight: 600;
     }
 
-    /* Control Panel */
-    .control-panel {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: var(--space-md);
-      margin-bottom: var(--space-xl);
-    }
-
-    .control-btn {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      color: var(--text-primary);
-      padding: var(--space-md);
-      border-radius: 0.75rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-xs);
-    }
-
-    .control-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--accent-lime);
-      transform: translateY(-2px);
-    }
-
-    .control-btn.active {
-      background: var(--accent-lime);
-      color: #000;
-      border-color: var(--accent-lime);
-    }
-
-    /* Floating Boxes - Up/Down Swipable (8 boxes) */
-    .floating-box-vertical {
-      position: fixed;
-      width: 90vw;
-      height: 60vh; /* 20% shorter than 80vh */
-      max-width: 400px;
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: var(--space-lg);
-      box-shadow: var(--shadow);
-      z-index: 200;
+    .instruction-hint {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 2rem 0;
       opacity: 0;
-      visibility: hidden;
-      transform: translateY(100vh);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      left: 50%;
-      margin-left: -45vw; /* Center horizontally */
-      max-height: 60vh;
-      overflow-y: auto;
+      animation: fadeInOut 6s ease-in-out infinite;
     }
 
-    .floating-box-vertical.visible {
-      opacity: 1;
-      visibility: visible;
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      20%, 80% { opacity: 0.6; }
+    }
+
+    /* The Single Swipe Box */
+    .swipe-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      border-top: 1px solid var(--card-border);
+      border-radius: 1rem 1rem 0 0;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+      z-index: 200;
+      overflow: hidden;
+      transform: translateY(220px);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .swipe-container.visible {
       transform: translateY(0);
     }
 
-    .floating-box-vertical.box-1 { top: 5vh; background: linear-gradient(135deg, var(--card-bg), rgba(244, 162, 97, 0.1)); }
-    .floating-box-vertical.box-2 { top: 10vh; background: linear-gradient(135deg, var(--card-bg), rgba(45, 212, 191, 0.1)); }
-    .floating-box-vertical.box-3 { top: 15vh; background: linear-gradient(135deg, var(--card-bg), rgba(50, 215, 75, 0.1)); }
-    .floating-box-vertical.box-4 { top: 20vh; background: linear-gradient(135deg, var(--card-bg), rgba(255, 149, 0, 0.1)); }
-    .floating-box-vertical.box-5 { top: 25vh; background: linear-gradient(135deg, var(--card-bg), rgba(196, 69, 54, 0.1)); }
-    .floating-box-vertical.box-6 { top: 30vh; background: linear-gradient(135deg, var(--card-bg), rgba(139, 92, 246, 0.1)); }
-    .floating-box-vertical.box-7 { top: 35vh; background: linear-gradient(135deg, var(--card-bg), rgba(236, 72, 153, 0.1)); }
-    .floating-box-vertical.box-8 { top: 40vh; background: linear-gradient(135deg, var(--card-bg), rgba(34, 197, 94, 0.1)); }
-
-    /* Floating Boxes - Left/Right Swipable (3 boxes) */
-    .floating-box-horizontal {
-      position: fixed;
-      width: 80vw;
-      height: 50vh;
-      max-width: 350px;
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: var(--space-lg);
-      box-shadow: var(--shadow);
-      z-index: 150;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateX(-100vw);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      top: 50%;
-      margin-top: -25vh; /* Center vertically */
-      overflow-y: auto;
-    }
-
-    .floating-box-horizontal.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0);
-    }
-
-    .floating-box-horizontal.hbox-1 { 
-      left: 5vw; 
-      background: linear-gradient(135deg, var(--card-bg), rgba(255, 213, 79, 0.15)); 
-    }
-    .floating-box-horizontal.hbox-2 { 
-      left: 10vw; 
-      background: linear-gradient(135deg, var(--card-bg), rgba(38, 166, 154, 0.15)); 
-    }
-    .floating-box-horizontal.hbox-3 { 
-      left: 15vw; 
-      background: linear-gradient(135deg, var(--card-bg), rgba(244, 162, 97, 0.15)); 
-    }
-
-    /* Box Headers */
-    .box-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-lg);
-      padding-bottom: var(--space-md);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .box-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-    }
-
-    .close-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .close-btn:hover {
-      background: var(--accent-brick);
-      transform: scale(1.1);
-    }
-
-    /* Box Content */
-    .box-content {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-
-    .box-feature {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: var(--space-md);
-      margin-bottom: var(--space-md);
-      transition: all 0.3s ease;
-    }
-
-    .box-feature:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--accent-lime);
-    }
-
-    .feature-icon {
-      font-size: 1.2rem;
-      margin-right: var(--space-sm);
-    }
-
-    /* Drag Indicators */
-    .drag-indicator {
+    .swipe-handle {
       position: absolute;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 3px;
-      transition: all 0.3s ease;
-    }
-
-    .drag-indicator-vertical {
-      top: 10px;
+      top: 8px;
       left: 50%;
       transform: translateX(-50%);
       width: 40px;
       height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      cursor: grab;
     }
 
-    .drag-indicator-horizontal {
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 40px;
+    .swipe-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      padding: 20px;
     }
 
-    /* Status Indicators */
-    .status-bar {
-      position: fixed;
-      top: 80px;
-      right: 20px;
+    .content-slider {
+      display: flex;
+      width: 1100%; /* 11 cards width */
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .content-card {
+      width: 9.09%; /* 100% / 11 cards */
+      flex-shrink: 0;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: var(--space-xs);
-      z-index: 300;
+      align-items: center;
+      text-align: center;
     }
 
-    .status-indicator {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: var(--space-xs) var(--space-sm);
-      font-size: 0.7rem;
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
       font-weight: 600;
-      text-align: center;
-      min-width: 60px;
+      margin-bottom: 0.5rem;
+      color: var(--accent-gold);
+    }
+
+    .card-description {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .card-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Navigation Arrows */
+    .nav-arrows {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: var(--blur);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      z-index: 10;
+    }
+
+    .nav-arrows:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrows.left {
+      left: 10px;
+    }
+
+    .nav-arrows.right {
+      right: 10px;
+    }
+
+    .nav-arrows.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Progress Dots */
+    .progress-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
       transition: all 0.3s ease;
     }
 
-    .status-indicator.active {
+    .progress-dot.active {
       background: var(--accent-lime);
+      transform: scale(1.2);
+    }
+
+    /* Touch/Swipe Area */
+    .touch-area {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+    }
+
+    /* Activation Button */
+    .activate-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
       color: #000;
-      border-color: var(--accent-lime);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .activate-btn:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .activate-btn.hidden {
+      opacity: 0;
+      transform: translateX(-50%) translateY(60px);
+      pointer-events: none;
     }
 
     /* Mobile Optimizations */
@@ -419,67 +422,20 @@
         font-size: 2rem;
       }
 
-      .floating-box-vertical {
-        width: 95vw;
-        margin-left: -47.5vw;
-        height: 55vh;
-      }
-
-      .floating-box-horizontal {
-        width: 85vw;
-        height: 45vh;
-        margin-top: -22.5vh;
-      }
-
       .main-container {
-        padding: var(--space-lg);
+        padding: 1.5rem;
       }
 
-      .control-panel {
-        grid-template-columns: repeat(2, 1fr);
+      .swipe-container {
+        height: 280px;
+        transform: translateY(200px);
       }
-    }
 
-    /* Touch Interaction Enhancements */
-    .floating-box-vertical,
-    .floating-box-horizontal {
-      touch-action: pan-y;
-      user-select: none;
-    }
-
-    .floating-box-horizontal {
-      touch-action: pan-x;
-    }
-
-    /* Animation Effects */
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(100px);
+      .nav-arrows {
+        width: 35px;
+        height: 50px;
+        font-size: 1rem;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .animate-in-up {
-      animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .animate-in-left {
-      animation: slideInLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
   </style>
 </head>
@@ -489,331 +445,221 @@
   <header class="header">
     <div class="header-content">
       <div class="brand-name">INTUITY</div>
-      <div class="subtitle">Enhanced Floating Interface</div>
-      <div class="author-credit">by Majid Nashtai</div>
+      <div class="subtitle">Simple Swipe Interface</div>
+      <div class="author-section">
+        <a href="../index.html" class="nav-btn">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <div class="author-credit">by Majid Nashtai</div>
+        <a href="../index.html" class="nav-btn">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </div>
     </div>
   </header>
 
   <div class="main-container">
     <div class="text-display-container">
       <div class="text-paragraph">
-        Welcome to the <span class="text-highlight">Enhanced INTUITY Interface</span> - a revolutionary way to interact with content through floating, swipable panels.
+        Welcome to the <span class="text-highlight">Simple Swipe Interface</span> - one focused box with clear navigation.
       </div>
       <div class="text-paragraph">
-        This interface features <span class="text-highlight">8 vertical swipable boxes</span> and <span class="text-highlight">3 horizontal swipable boxes</span> that remain invisible until activated.
+        All your learning tools in <span class="text-highlight">one place</span>, accessed through intuitive left and right swipes.
       </div>
       <div class="text-paragraph">
-        Each box is optimized for mobile interaction with smooth animations and intuitive gestures.
+        <strong>Tap the button below</strong> to reveal the tool box, then <strong>use the arrows or swipe</strong> to navigate.
       </div>
     </div>
 
-    <div class="control-panel">
-      <button class="control-btn" onclick="toggleVerticalBox(1)">
-        <i class="fas fa-arrow-up"></i> Box 1
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(2)">
-        <i class="fas fa-arrow-up"></i> Box 2
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(3)">
-        <i class="fas fa-arrow-up"></i> Box 3
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(4)">
-        <i class="fas fa-arrow-up"></i> Box 4
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(5)">
-        <i class="fas fa-arrow-up"></i> Box 5
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(6)">
-        <i class="fas fa-arrow-up"></i> Box 6
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(7)">
-        <i class="fas fa-arrow-up"></i> Box 7
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(8)">
-        <i class="fas fa-arrow-up"></i> Box 8
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(1)">
-        <i class="fas fa-arrow-right"></i> H-Box 1
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(2)">
-        <i class="fas fa-arrow-right"></i> H-Box 2
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(3)">
-        <i class="fas fa-arrow-right"></i> H-Box 3
-      </button>
+    <div class="instruction-hint">
+      👆 Tap below to activate your learning toolkit
     </div>
   </div>
 
-  <!-- 8 Vertical Swipable Boxes (Up/Down) -->
-  <div class="floating-box-vertical box-1" id="vbox-1">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">🔥 Learning Analytics</div>
-      <button class="close-btn" onclick="hideVerticalBox(1)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-chart-line feature-icon"></i>
-        <strong>Progress Tracking:</strong> Monitor your learning journey with detailed analytics and insights.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-target feature-icon"></i>
-        <strong>Goal Setting:</strong> Set and achieve personalized learning objectives.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-brain feature-icon"></i>
-        <strong>AI Insights:</strong> Get intelligent recommendations based on your performance.
-      </div>
-    </div>
-  </div>
+  <!-- Activation Button -->
+  <button class="activate-btn" id="activateBtn" onclick="toggleSwipeBox()">
+    <i class="fas fa-magic"></i> Activate Learning Tools
+  </button>
 
-  <div class="floating-box-vertical box-2" id="vbox-2">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">💡 Interactive Content</div>
-      <button class="close-btn" onclick="hideVerticalBox(2)">×</button>
+  <!-- Single Swipe Box -->
+  <div class="swipe-container" id="swipeContainer">
+    <div class="swipe-handle"></div>
+    
+    <!-- Left Arrow -->
+    <div class="nav-arrows left" id="leftArrow" onclick="swipeLeft()">
+      <i class="fas fa-chevron-left"></i>
     </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-play feature-icon"></i>
-        <strong>Multimedia:</strong> Rich content with videos, animations, and interactive elements.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-gamepad feature-icon"></i>
-        <strong>Gamification:</strong> Learning through engaging games and challenges.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-users feature-icon"></i>
-        <strong>Collaboration:</strong> Connect and learn with peers in real-time.
-      </div>
+    
+    <!-- Right Arrow -->
+    <div class="nav-arrows right" id="rightArrow" onclick="swipeRight()">
+      <i class="fas fa-chevron-right"></i>
     </div>
-  </div>
 
-  <div class="floating-box-vertical box-3" id="vbox-3">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">🎯 Assessment Tools</div>
-      <button class="close-btn" onclick="hideVerticalBox(3)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-clipboard-check feature-icon"></i>
-        <strong>Smart Quizzes:</strong> Adaptive assessments that adjust to your skill level.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-stopwatch feature-icon"></i>
-        <strong>Timed Challenges:</strong> Build speed and accuracy with time-based exercises.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-medal feature-icon"></i>
-        <strong>Achievements:</strong> Earn badges and certificates for your accomplishments.
-      </div>
-    </div>
-  </div>
+    <div class="swipe-content">
+      <div class="content-slider" id="contentSlider">
+        
+        <!-- Card 1: Learning Analytics -->
+        <div class="content-card">
+          <div class="card-icon">🔥</div>
+          <div class="card-title">Learning Analytics</div>
+          <div class="card-description">Track your progress with detailed insights</div>
+          <div class="card-features">
+            <div class="feature-item">📈 Progress Tracking</div>
+            <div class="feature-item">🎯 Goal Setting</div>
+            <div class="feature-item">🧠 AI Insights</div>
+          </div>
+        </div>
 
-  <div class="floating-box-vertical box-4" id="vbox-4">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">🌟 Personalization</div>
-      <button class="close-btn" onclick="hideVerticalBox(4)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-palette feature-icon"></i>
-        <strong>Custom Themes:</strong> Personalize your interface with beautiful themes.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-cog feature-icon"></i>
-        <strong>Adaptive UI:</strong> Interface that learns and adapts to your preferences.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-language feature-icon"></i>
-        <strong>Multi-language:</strong> Support for multiple languages and localization.
-      </div>
-    </div>
-  </div>
+        <!-- Card 2: Interactive Content -->
+        <div class="content-card">
+          <div class="card-icon">💡</div>
+          <div class="card-title">Interactive Content</div>
+          <div class="card-description">Rich multimedia learning experiences</div>
+          <div class="card-features">
+            <div class="feature-item">▶️ Multimedia</div>
+            <div class="feature-item">🎮 Gamification</div>
+            <div class="feature-item">👥 Collaboration</div>
+          </div>
+        </div>
 
-  <div class="floating-box-vertical box-5" id="vbox-5">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">📚 Content Library</div>
-      <button class="close-btn" onclick="hideVerticalBox(5)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-book feature-icon"></i>
-        <strong>Vast Collection:</strong> Access thousands of learning materials and resources.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-search feature-icon"></i>
-        <strong>Smart Search:</strong> Find exactly what you need with AI-powered search.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-bookmark feature-icon"></i>
-        <strong>Bookmarks:</strong> Save and organize your favorite content for later.
-      </div>
-    </div>
-  </div>
+        <!-- Card 3: Assessment Tools -->
+        <div class="content-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Assessment Tools</div>
+          <div class="card-description">Smart quizzes and challenges</div>
+          <div class="card-features">
+            <div class="feature-item">📝 Smart Quizzes</div>
+            <div class="feature-item">⏱️ Timed Challenges</div>
+            <div class="feature-item">🏆 Achievements</div>
+          </div>
+        </div>
 
-  <div class="floating-box-vertical box-6" id="vbox-6">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">🔬 Advanced Features</div>
-      <button class="close-btn" onclick="hideVerticalBox(6)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-magic feature-icon"></i>
-        <strong>AI Tutor:</strong> Personal AI assistant to guide your learning process.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-microscope feature-icon"></i>
-        <strong>Deep Analysis:</strong> Detailed performance analysis and insights.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-rocket feature-icon"></i>
-        <strong>Accelerated Learning:</strong> Proven techniques to learn faster and retain more.
-      </div>
-    </div>
-  </div>
+        <!-- Card 4: Personalization -->
+        <div class="content-card">
+          <div class="card-icon">🌟</div>
+          <div class="card-title">Personalization</div>
+          <div class="card-description">Customize your learning experience</div>
+          <div class="card-features">
+            <div class="feature-item">🎨 Custom Themes</div>
+            <div class="feature-item">⚙️ Adaptive UI</div>
+            <div class="feature-item">🌍 Multi-language</div>
+          </div>
+        </div>
 
-  <div class="floating-box-vertical box-7" id="vbox-7">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">💬 Communication</div>
-      <button class="close-btn" onclick="hideVerticalBox(7)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-comments feature-icon"></i>
-        <strong>Live Chat:</strong> Real-time communication with instructors and peers.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-video feature-icon"></i>
-        <strong>Video Calls:</strong> Face-to-face learning sessions and tutoring.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-question-circle feature-icon"></i>
-        <strong>Q&A Forums:</strong> Get help and share knowledge with the community.
-      </div>
-    </div>
-  </div>
+        <!-- Card 5: Content Library -->
+        <div class="content-card">
+          <div class="card-icon">📚</div>
+          <div class="card-title">Content Library</div>
+          <div class="card-description">Access thousands of resources</div>
+          <div class="card-features">
+            <div class="feature-item">📖 Vast Collection</div>
+            <div class="feature-item">🔍 Smart Search</div>
+            <div class="feature-item">🔖 Bookmarks</div>
+          </div>
+        </div>
 
-  <div class="floating-box-vertical box-8" id="vbox-8">
-    <div class="drag-indicator drag-indicator-vertical"></div>
-    <div class="box-header">
-      <div class="box-title">🌐 Integration</div>
-      <button class="close-btn" onclick="hideVerticalBox(8)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-cloud feature-icon"></i>
-        <strong>Cloud Sync:</strong> Access your progress across all devices seamlessly.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-mobile-alt feature-icon"></i>
-        <strong>Mobile Apps:</strong> Native apps for iOS and Android devices.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-plug feature-icon"></i>
-        <strong>API Access:</strong> Integrate with third-party tools and services.
-      </div>
-    </div>
-  </div>
+        <!-- Card 6: Advanced Features -->
+        <div class="content-card">
+          <div class="card-icon">🔬</div>
+          <div class="card-title">Advanced Features</div>
+          <div class="card-description">AI-powered learning assistance</div>
+          <div class="card-features">
+            <div class="feature-item">🪄 AI Tutor</div>
+            <div class="feature-item">🔬 Deep Analysis</div>
+            <div class="feature-item">🚀 Accelerated Learning</div>
+          </div>
+        </div>
 
-  <!-- 3 Horizontal Swipable Boxes (Left/Right) -->
-  <div class="floating-box-horizontal hbox-1" id="hbox-1">
-    <div class="drag-indicator drag-indicator-horizontal"></div>
-    <div class="box-header">
-      <div class="box-title">⚡ Quick Actions</div>
-      <button class="close-btn" onclick="hideHorizontalBox(1)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-bolt feature-icon"></i>
-        <strong>Instant Start:</strong> Jump into lessons with one tap.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-history feature-icon"></i>
-        <strong>Recent Activity:</strong> Continue where you left off.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-star feature-icon"></i>
-        <strong>Favorites:</strong> Quick access to your preferred content.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-download feature-icon"></i>
-        <strong>Offline Mode:</strong> Download content for offline learning.
-      </div>
-    </div>
-  </div>
+        <!-- Card 7: Communication -->
+        <div class="content-card">
+          <div class="card-icon">💬</div>
+          <div class="card-title">Communication</div>
+          <div class="card-description">Connect with instructors and peers</div>
+          <div class="card-features">
+            <div class="feature-item">💬 Live Chat</div>
+            <div class="feature-item">📹 Video Calls</div>
+            <div class="feature-item">❓ Q&A Forums</div>
+          </div>
+        </div>
 
-  <div class="floating-box-horizontal hbox-2" id="hbox-2">
-    <div class="drag-indicator drag-indicator-horizontal"></div>
-    <div class="box-header">
-      <div class="box-title">📊 Statistics</div>
-      <button class="close-btn" onclick="hideHorizontalBox(2)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-chart-pie feature-icon"></i>
-        <strong>Performance Overview:</strong> Visual dashboard of your progress.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-calendar feature-icon"></i>
-        <strong>Learning Streaks:</strong> Track your daily study habits.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-trophy feature-icon"></i>
-        <strong>Leaderboards:</strong> Compare your progress with peers.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-clock feature-icon"></i>
-        <strong>Time Analytics:</strong> Understand your learning patterns.
-      </div>
-    </div>
-  </div>
+        <!-- Card 8: Integration -->
+        <div class="content-card">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">Integration</div>
+          <div class="card-description">Seamless device synchronization</div>
+          <div class="card-features">
+            <div class="feature-item">☁️ Cloud Sync</div>
+            <div class="feature-item">📱 Mobile Apps</div>
+            <div class="feature-item">🔌 API Access</div>
+          </div>
+        </div>
 
-  <div class="floating-box-horizontal hbox-3" id="hbox-3">
-    <div class="drag-indicator drag-indicator-horizontal"></div>
-    <div class="box-header">
-      <div class="box-title">🛠️ Settings</div>
-      <button class="close-btn" onclick="hideHorizontalBox(3)">×</button>
-    </div>
-    <div class="box-content">
-      <div class="box-feature">
-        <i class="fas fa-user-cog feature-icon"></i>
-        <strong>Profile Settings:</strong> Customize your learning profile.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-bell feature-icon"></i>
-        <strong>Notifications:</strong> Manage alerts and reminders.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-shield-alt feature-icon"></i>
-        <strong>Privacy:</strong> Control your data and privacy settings.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-sync feature-icon"></i>
-        <strong>Sync Preferences:</strong> Choose what data to sync across devices.
-      </div>
-    </div>
-  </div>
+        <!-- Card 9: Quick Actions -->
+        <div class="content-card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Quick Actions</div>
+          <div class="card-description">Instant access to common tasks</div>
+          <div class="card-features">
+            <div class="feature-item">⚡ Instant Start</div>
+            <div class="feature-item">🕒 Recent Activity</div>
+            <div class="feature-item">⭐ Favorites</div>
+          </div>
+        </div>
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <div class="status-indicator" id="vbox-status">V-Boxes: 0/8</div>
-    <div class="status-indicator" id="hbox-status">H-Boxes: 0/3</div>
+        <!-- Card 10: Statistics -->
+        <div class="content-card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Statistics</div>
+          <div class="card-description">Detailed performance metrics</div>
+          <div class="card-features">
+            <div class="feature-item">📊 Performance Overview</div>
+            <div class="feature-item">📅 Learning Streaks</div>
+            <div class="feature-item">🏆 Leaderboards</div>
+          </div>
+        </div>
+
+        <!-- Card 11: Settings -->
+        <div class="content-card">
+          <div class="card-icon">🛠️</div>
+          <div class="card-title">Settings</div>
+          <div class="card-description">Customize your preferences</div>
+          <div class="card-features">
+            <div class="feature-item">👤 Profile Settings</div>
+            <div class="feature-item">🔔 Notifications</div>
+            <div class="feature-item">🛡️ Privacy</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots" id="progressDots">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+
+    <!-- Touch Area for Swiping -->
+    <div class="touch-area" id="touchArea"></div>
   </div>
 
   <script>
     // Global state
-    let activeVerticalBoxes = new Set();
-    let activeHorizontalBoxes = new Set();
-    let touchStartY = 0;
+    let currentCard = 0;
+    let totalCards = 11;
+    let isBoxVisible = false;
     let touchStartX = 0;
+    let touchEndX = 0;
     let isDragging = false;
-    let currentDragBox = null;
 
     // Create constellation background
     function createConstellation() {
@@ -828,221 +674,186 @@
       }
     }
 
-    // Vertical box controls
-    function toggleVerticalBox(id) {
-      if (activeVerticalBoxes.has(id)) {
-        hideVerticalBox(id);
-      } else {
-        showVerticalBox(id);
-      }
-    }
-
-    function showVerticalBox(id) {
-      const box = document.getElementById(`vbox-${id}`);
-      if (box) {
-        box.classList.add('visible', 'animate-in-up');
-        activeVerticalBoxes.add(id);
-        updateStatusIndicators();
-        setupBoxGestures(box, 'vertical', id);
-        
-        // Remove animation class after animation completes
-        setTimeout(() => {
-          box.classList.remove('animate-in-up');
-        }, 600);
-      }
-    }
-
-    function hideVerticalBox(id) {
-      const box = document.getElementById(`vbox-${id}`);
-      if (box) {
-        box.classList.remove('visible');
-        activeVerticalBoxes.delete(id);
-        updateStatusIndicators();
-      }
-    }
-
-    // Horizontal box controls
-    function toggleHorizontalBox(id) {
-      if (activeHorizontalBoxes.has(id)) {
-        hideHorizontalBox(id);
-      } else {
-        showHorizontalBox(id);
-      }
-    }
-
-    function showHorizontalBox(id) {
-      const box = document.getElementById(`hbox-${id}`);
-      if (box) {
-        box.classList.add('visible', 'animate-in-left');
-        activeHorizontalBoxes.add(id);
-        updateStatusIndicators();
-        setupBoxGestures(box, 'horizontal', id);
-        
-        // Remove animation class after animation completes
-        setTimeout(() => {
-          box.classList.remove('animate-in-left');
-        }, 600);
-      }
-    }
-
-    function hideHorizontalBox(id) {
-      const box = document.getElementById(`hbox-${id}`);
-      if (box) {
-        box.classList.remove('visible');
-        activeHorizontalBoxes.delete(id);
-        updateStatusIndicators();
-      }
-    }
-
-    // Update status indicators
-    function updateStatusIndicators() {
-      document.getElementById('vbox-status').textContent = `V-Boxes: ${activeVerticalBoxes.size}/8`;
-      document.getElementById('hbox-status').textContent = `H-Boxes: ${activeHorizontalBoxes.size}/3`;
+    // Toggle swipe box visibility
+    function toggleSwipeBox() {
+      const container = document.getElementById('swipeContainer');
+      const activateBtn = document.getElementById('activateBtn');
       
-      // Update active state
-      document.getElementById('vbox-status').classList.toggle('active', activeVerticalBoxes.size > 0);
-      document.getElementById('hbox-status').classList.toggle('active', activeHorizontalBoxes.size > 0);
+      isBoxVisible = !isBoxVisible;
+      
+      if (isBoxVisible) {
+        container.classList.add('visible');
+        activateBtn.classList.add('hidden');
+      } else {
+        container.classList.remove('visible');
+        activateBtn.classList.remove('hidden');
+      }
+      
+      updateArrows();
     }
 
-    // Enhanced gesture controls
-    function setupBoxGestures(box, type, id) {
-      let startPos = { x: 0, y: 0 };
-      let currentPos = { x: 0, y: 0 };
-      let isDragging = false;
+    // Navigate to specific card
+    function goToCard(index) {
+      currentCard = Math.max(0, Math.min(index, totalCards - 1));
+      
+      const slider = document.getElementById('contentSlider');
+      const translateX = -(currentCard * (100 / totalCards));
+      slider.style.transform = `translateX(${translateX}%)`;
+      
+      updateProgressDots();
+      updateArrows();
+    }
 
-      // Touch events
-      box.addEventListener('touchstart', (e) => {
-        startPos.x = e.touches[0].clientX;
-        startPos.y = e.touches[0].clientY;
+    // Swipe navigation
+    function swipeLeft() {
+      if (currentCard > 0) {
+        goToCard(currentCard - 1);
+      }
+    }
+
+    function swipeRight() {
+      if (currentCard < totalCards - 1) {
+        goToCard(currentCard + 1);
+      }
+    }
+
+    // Update progress dots
+    function updateProgressDots() {
+      const dots = document.querySelectorAll('.progress-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentCard);
+      });
+    }
+
+    // Update arrow states
+    function updateArrows() {
+      const leftArrow = document.getElementById('leftArrow');
+      const rightArrow = document.getElementById('rightArrow');
+      
+      leftArrow.classList.toggle('disabled', currentCard === 0);
+      rightArrow.classList.toggle('disabled', currentCard === totalCards - 1);
+    }
+
+    // Touch/swipe handling
+    function setupTouchHandling() {
+      const touchArea = document.getElementById('touchArea');
+      
+      touchArea.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
         isDragging = true;
-        box.style.transition = 'none';
       });
 
-      box.addEventListener('touchmove', (e) => {
+      touchArea.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        
-        currentPos.x = e.touches[0].clientX - startPos.x;
-        currentPos.y = e.touches[0].clientY - startPos.y;
-
-        if (type === 'vertical') {
-          // Only allow vertical movement
-          box.style.transform = `translateY(${Math.max(0, currentPos.y)}px)`;
-        } else {
-          // Only allow horizontal movement
-          box.style.transform = `translateX(${Math.min(0, currentPos.x)}px)`;
-        }
+        e.preventDefault();
       });
 
-      box.addEventListener('touchend', (e) => {
+      touchArea.addEventListener('touchend', (e) => {
         if (!isDragging) return;
+        touchEndX = e.changedTouches[0].clientX;
         isDragging = false;
-        box.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-        const threshold = 100;
         
-        if (type === 'vertical' && currentPos.y > threshold) {
-          hideVerticalBox(id);
-        } else if (type === 'horizontal' && currentPos.x < -threshold) {
-          hideHorizontalBox(id);
-        } else {
-          // Snap back to original position
-          box.style.transform = '';
+        const swipeThreshold = 50;
+        const swipeDistance = touchStartX - touchEndX;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+          if (swipeDistance > 0) {
+            // Swiped left (go right)
+            swipeRight();
+          } else {
+            // Swiped right (go left)
+            swipeLeft();
+          }
         }
       });
 
       // Mouse events for desktop
-      box.addEventListener('mousedown', (e) => {
-        startPos.x = e.clientX;
-        startPos.y = e.clientY;
+      touchArea.addEventListener('mousedown', (e) => {
+        touchStartX = e.clientX;
         isDragging = true;
-        box.style.transition = 'none';
         e.preventDefault();
       });
 
       document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        
-        currentPos.x = e.clientX - startPos.x;
-        currentPos.y = e.clientY - startPos.y;
-
-        if (type === 'vertical') {
-          box.style.transform = `translateY(${Math.max(0, currentPos.y)}px)`;
-        } else {
-          box.style.transform = `translateX(${Math.min(0, currentPos.x)}px)`;
-        }
+        e.preventDefault();
       });
 
       document.addEventListener('mouseup', (e) => {
         if (!isDragging) return;
+        touchEndX = e.clientX;
         isDragging = false;
-        box.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-        const threshold = 100;
         
-        if (type === 'vertical' && currentPos.y > threshold) {
-          hideVerticalBox(id);
-        } else if (type === 'horizontal' && currentPos.x < -threshold) {
-          hideHorizontalBox(id);
-        } else {
-          box.style.transform = '';
+        const swipeThreshold = 50;
+        const swipeDistance = touchStartX - touchEndX;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+          if (swipeDistance > 0) {
+            swipeRight();
+          } else {
+            swipeLeft();
+          }
         }
       });
     }
 
-    // Keyboard shortcuts
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (e.key >= '1' && e.key <= '8') {
-        const boxNum = parseInt(e.key);
-        toggleVerticalBox(boxNum);
-      } else if (e.key.toLowerCase() === 'h') {
-        // Toggle horizontal boxes sequentially
-        const nextHBox = Array.from(activeHorizontalBoxes).length + 1;
-        if (nextHBox <= 3) {
-          toggleHorizontalBox(nextHBox);
-        }
-      } else if (e.key === 'Escape') {
-        // Hide all boxes
-        activeVerticalBoxes.forEach(id => hideVerticalBox(id));
-        activeHorizontalBoxes.forEach(id => hideHorizontalBox(id));
-      }
-    });
-
-    // Initialize the application
-    document.addEventListener('DOMContentLoaded', () => {
-      createConstellation();
-      updateStatusIndicators();
+      if (!isBoxVisible) return;
       
-      // Show welcome message
-      setTimeout(() => {
-        showVerticalBox(1);
-      }, 1000);
-    });
-
-    // Auto-hide boxes on outside click
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.floating-box-vertical') && 
-          !e.target.closest('.floating-box-horizontal') && 
-          !e.target.closest('.control-btn')) {
-        // Optionally hide boxes when clicking outside
-        // Uncomment below to enable this feature
-        // activeVerticalBoxes.forEach(id => hideVerticalBox(id));
-        // activeHorizontalBoxes.forEach(id => hideHorizontalBox(id));
+      if (e.key === 'ArrowLeft') {
+        swipeLeft();
+      } else if (e.key === 'ArrowRight') {
+        swipeRight();
+      } else if (e.key === 'Escape') {
+        toggleSwipeBox();
       }
     });
 
-    // Performance optimization - disable animations during rapid interactions
-    let animationTimeout;
-    function optimizeAnimations() {
-      document.body.style.transition = 'none';
-      clearTimeout(animationTimeout);
-      animationTimeout = setTimeout(() => {
-        document.body.style.transition = '';
-      }, 300);
+    // Handle swipe container itself (pull down to close)
+    function setupContainerHandling() {
+      const container = document.getElementById('swipeContainer');
+      const handle = document.querySelector('.swipe-handle');
+      let startY = 0;
+      let currentY = 0;
+      let isHandleDragging = false;
+
+      handle.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isHandleDragging = true;
+        container.style.transition = 'none';
+      });
+
+      handle.addEventListener('touchmove', (e) => {
+        if (!isHandleDragging) return;
+        currentY = e.touches[0].clientY - startY;
+        
+        if (currentY > 0) {
+          container.style.transform = `translateY(${currentY}px)`;
+        }
+      });
+
+      handle.addEventListener('touchend', (e) => {
+        if (!isHandleDragging) return;
+        isHandleDragging = false;
+        container.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        
+        if (currentY > 100) {
+          toggleSwipeBox();
+        } else {
+          container.style.transform = 'translateY(0)';
+        }
+      });
     }
 
-    // Add performance optimization to gesture handlers
-    document.addEventListener('touchstart', optimizeAnimations);
-    document.addEventListener('touchmove', optimizeAnimations);
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      createConstellation();
+      setupTouchHandling();
+      setupContainerHandling();
+      updateProgressDots();
+      updateArrows();
+    });
   </script>
 </body>
 </html>
