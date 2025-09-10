@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTUITY - Multi-Box Swipe System</title>
+  <title>INTUITY - Clean Gesture Interface</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -32,7 +32,6 @@
       --space-xl: 2rem;
       --blur: blur(20px);
       --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --box-shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1);
     }
 
     * {
@@ -132,41 +131,16 @@
       }
     }
 
-    .author-section {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: var(--space-xs);
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
     }
 
     .author-credit {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       font-weight: 300;
-    }
-
-    .nav-btn {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      color: var(--text-primary);
-      padding: var(--space-sm) var(--space-md);
-      border-radius: 0.75rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-    }
-
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--accent-teal);
-      transform: translateY(-2px);
     }
 
     /* Main Content Container */
@@ -203,44 +177,59 @@
       font-weight: 600;
     }
 
-    /* Control Panel */
-    .control-panel {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: var(--space-md);
-      margin-bottom: var(--space-xl);
-    }
-
-    .control-btn {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      color: var(--text-primary);
-      padding: var(--space-md);
-      border-radius: 0.75rem;
+    /* Gesture Instruction */
+    .gesture-hint {
+      text-align: center;
+      color: var(--text-muted);
       font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-xs);
+      margin: 2rem 0;
+      opacity: 0;
+      animation: fadeInOut 4s ease-in-out infinite;
     }
 
-    .control-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--accent-lime);
-      transform: translateY(-2px);
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.6; }
     }
 
-    .control-btn.active {
-      background: var(--accent-lime);
-      color: #000;
-      border-color: var(--accent-lime);
+    .gesture-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
     }
 
-    /* Floating Boxes - Up/Down Swipable (8 boxes) */
+    /* Gesture Detection Zones */
+    .gesture-zone {
+      position: fixed;
+      z-index: 50;
+      pointer-events: all;
+    }
+
+    .gesture-zone-bottom {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.02), transparent);
+    }
+
+    .gesture-zone-right {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 60px;
+      background: linear-gradient(to left, rgba(255, 255, 255, 0.02), transparent);
+    }
+
+    .gesture-zone-left {
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.02), transparent);
+    }
+
+    /* Floating Boxes - Start completely off-screen */
     .floating-box-vertical {
       position: fixed;
       width: 90vw;
@@ -255,8 +244,8 @@
       z-index: 200;
       opacity: 0;
       visibility: hidden;
-      transform: translateY(100vh);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateY(120vh); /* Start completely off-screen */
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       left: 50%;
       margin-left: -45vw;
       max-height: 60vh;
@@ -269,6 +258,7 @@
       transform: translateY(0);
     }
 
+    /* Different starting positions for variety */
     .floating-box-vertical.box-1 { top: 5vh; background: linear-gradient(135deg, var(--card-bg), rgba(244, 162, 97, 0.1)); }
     .floating-box-vertical.box-2 { top: 10vh; background: linear-gradient(135deg, var(--card-bg), rgba(45, 212, 191, 0.1)); }
     .floating-box-vertical.box-3 { top: 15vh; background: linear-gradient(135deg, var(--card-bg), rgba(50, 215, 75, 0.1)); }
@@ -278,7 +268,6 @@
     .floating-box-vertical.box-7 { top: 35vh; background: linear-gradient(135deg, var(--card-bg), rgba(236, 72, 153, 0.1)); }
     .floating-box-vertical.box-8 { top: 40vh; background: linear-gradient(135deg, var(--card-bg), rgba(34, 197, 94, 0.1)); }
 
-    /* Floating Boxes - Left/Right Swipable (3 boxes) */
     .floating-box-horizontal {
       position: fixed;
       width: 80vw;
@@ -293,8 +282,8 @@
       z-index: 150;
       opacity: 0;
       visibility: hidden;
-      transform: translateX(-100vw);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateX(-120vw); /* Start completely off-screen */
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       top: 50%;
       margin-top: -25vh;
       overflow-y: auto;
@@ -415,6 +404,12 @@
       flex-direction: column;
       gap: var(--space-xs);
       z-index: 300;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .status-bar.active {
+      opacity: 1;
     }
 
     .status-indicator {
@@ -458,8 +453,13 @@
         padding: var(--space-lg);
       }
 
-      .control-panel {
-        grid-template-columns: repeat(2, 1fr);
+      .gesture-zone-bottom {
+        height: 100px;
+      }
+
+      .gesture-zone-right,
+      .gesture-zone-left {
+        width: 80px;
       }
     }
 
@@ -473,37 +473,6 @@
     .floating-box-horizontal {
       touch-action: pan-x;
     }
-
-    /* Animation Effects */
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .animate-in-up {
-      animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .animate-in-left {
-      animation: slideInLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
   </style>
 </head>
 <body>
@@ -512,69 +481,44 @@
   <header class="header">
     <div class="header-content">
       <div class="brand-name">INTUITY</div>
+      <div class="subtitle">Clean Gesture Interface</div>
       <div class="author-section">
-        <a href="index.html" class="nav-btn">
+        <a href="../interface-folder/interface3.html" class="nav-btn">
           <i class="fas fa-home"></i> Home
         </a>
         <div class="author-credit">by Majid Nashtai</div>
-        <a href="index.html" class="nav-btn">
+        <a href="../index.html" class="nav-btn">
           <i class="fas fa-arrow-left"></i> Back
         </a>
       </div>
     </div>
   </header>
 
+  <!-- Gesture Detection Zones -->
+  <div class="gesture-zone gesture-zone-bottom" id="gestureBottom"></div>
+  <div class="gesture-zone gesture-zone-right" id="gestureRight"></div>
+  <div class="gesture-zone gesture-zone-left" id="gestureLeft"></div>
+
   <div class="main-container">
     <div class="text-display-container">
       <div class="text-paragraph">
-        Welcome to the <span class="text-highlight">Multi-Box Swipe System</span> - a comprehensive interface with 11 floating boxes.
+        Welcome to the <span class="text-highlight">Clean Gesture Interface</span> - completely invisible until you need it.
       </div>
       <div class="text-paragraph">
-        This interface features <span class="text-highlight">8 vertical swipable boxes</span> and <span class="text-highlight">3 horizontal swipable boxes</span> that remain invisible until activated.
+        This interface has <span class="text-highlight">11 floating boxes</span> hidden off-screen, activated only by touch gestures.
       </div>
       <div class="text-paragraph">
-        Each box is optimized for mobile interaction with smooth animations and intuitive gestures.
+        <strong>Swipe up from bottom</strong> for vertical boxes, <strong>swipe right from edges</strong> for horizontal boxes.
       </div>
     </div>
 
-    <div class="control-panel">
-      <button class="control-btn" onclick="toggleVerticalBox(1)">
-        <i class="fas fa-arrow-up"></i> Box 1
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(2)">
-        <i class="fas fa-arrow-up"></i> Box 2
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(3)">
-        <i class="fas fa-arrow-up"></i> Box 3
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(4)">
-        <i class="fas fa-arrow-up"></i> Box 4
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(5)">
-        <i class="fas fa-arrow-up"></i> Box 5
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(6)">
-        <i class="fas fa-arrow-up"></i> Box 6
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(7)">
-        <i class="fas fa-arrow-up"></i> Box 7
-      </button>
-      <button class="control-btn" onclick="toggleVerticalBox(8)">
-        <i class="fas fa-arrow-up"></i> Box 8
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(1)">
-        <i class="fas fa-arrow-right"></i> H-Box 1
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(2)">
-        <i class="fas fa-arrow-right"></i> H-Box 2
-      </button>
-      <button class="control-btn" onclick="toggleHorizontalBox(3)">
-        <i class="fas fa-arrow-right"></i> H-Box 3
-      </button>
+    <div class="gesture-hint">
+      <i class="fas fa-hand-point-up gesture-icon"></i>
+      Try swiping up from the bottom edge
     </div>
   </div>
 
-  <!-- 8 Vertical Swipable Boxes (Up/Down) -->
+  <!-- 8 Vertical Swipable Boxes (Hidden off-screen) -->
   <div class="floating-box-vertical box-1" id="vbox-1">
     <div class="drag-indicator drag-indicator-vertical"></div>
     <div class="box-header">
@@ -751,7 +695,7 @@
     </div>
   </div>
 
-  <!-- 3 Horizontal Swipable Boxes (Left/Right) -->
+  <!-- 3 Horizontal Swipable Boxes (Hidden off-screen) -->
   <div class="floating-box-horizontal hbox-1" id="hbox-1">
     <div class="drag-indicator drag-indicator-horizontal"></div>
     <div class="box-header">
@@ -770,10 +714,6 @@
       <div class="box-feature">
         <i class="fas fa-star feature-icon"></i>
         <strong>Favorites:</strong> Quick access to your preferred content.
-      </div>
-      <div class="box-feature">
-        <i class="fas fa-download feature-icon"></i>
-        <strong>Offline Mode:</strong> Download content for offline learning.
       </div>
     </div>
   </div>
@@ -797,10 +737,6 @@
         <i class="fas fa-trophy feature-icon"></i>
         <strong>Leaderboards:</strong> Compare your progress with peers.
       </div>
-      <div class="box-feature">
-        <i class="fas fa-clock feature-icon"></i>
-        <strong>Time Analytics:</strong> Understand your learning patterns.
-      </div>
     </div>
   </div>
 
@@ -823,27 +759,22 @@
         <i class="fas fa-shield-alt feature-icon"></i>
         <strong>Privacy:</strong> Control your data and privacy settings.
       </div>
-      <div class="box-feature">
-        <i class="fas fa-sync feature-icon"></i>
-        <strong>Sync Preferences:</strong> Choose what data to sync across devices.
-      </div>
     </div>
   </div>
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <div class="status-indicator" id="vbox-status">V-Boxes: 0/8</div>
-    <div class="status-indicator" id="hbox-status">H-Boxes: 0/3</div>
+  <!-- Status Bar (only shows when boxes are active) -->
+  <div class="status-bar" id="statusBar">
+    <div class="status-indicator" id="vbox-status">V: 0/8</div>
+    <div class="status-indicator" id="hbox-status">H: 0/3</div>
   </div>
 
   <script>
     // Global state
     let activeVerticalBoxes = new Set();
     let activeHorizontalBoxes = new Set();
-    let touchStartY = 0;
-    let touchStartX = 0;
-    let isDragging = false;
-    let currentDragBox = null;
+    let gestureStartY = 0;
+    let gestureStartX = 0;
+    let currentGestureZone = null;
 
     // Create constellation background
     function createConstellation() {
@@ -858,26 +789,14 @@
       }
     }
 
-    // Vertical box controls
-    function toggleVerticalBox(id) {
-      if (activeVerticalBoxes.has(id)) {
-        hideVerticalBox(id);
-      } else {
-        showVerticalBox(id);
-      }
-    }
-
+    // Box controls
     function showVerticalBox(id) {
       const box = document.getElementById(`vbox-${id}`);
-      if (box) {
-        box.classList.add('visible', 'animate-in-up');
+      if (box && !activeVerticalBoxes.has(id)) {
+        box.classList.add('visible');
         activeVerticalBoxes.add(id);
         updateStatusIndicators();
         setupBoxGestures(box, 'vertical', id);
-        
-        setTimeout(() => {
-          box.classList.remove('animate-in-up');
-        }, 600);
       }
     }
 
@@ -890,26 +809,13 @@
       }
     }
 
-    // Horizontal box controls
-    function toggleHorizontalBox(id) {
-      if (activeHorizontalBoxes.has(id)) {
-        hideHorizontalBox(id);
-      } else {
-        showHorizontalBox(id);
-      }
-    }
-
     function showHorizontalBox(id) {
       const box = document.getElementById(`hbox-${id}`);
-      if (box) {
-        box.classList.add('visible', 'animate-in-left');
+      if (box && !activeHorizontalBoxes.has(id)) {
+        box.classList.add('visible');
         activeHorizontalBoxes.add(id);
         updateStatusIndicators();
         setupBoxGestures(box, 'horizontal', id);
-        
-        setTimeout(() => {
-          box.classList.remove('animate-in-left');
-        }, 600);
       }
     }
 
@@ -924,14 +830,102 @@
 
     // Update status indicators
     function updateStatusIndicators() {
-      document.getElementById('vbox-status').textContent = `V-Boxes: ${activeVerticalBoxes.size}/8`;
-      document.getElementById('hbox-status').textContent = `H-Boxes: ${activeHorizontalBoxes.size}/3`;
+      const statusBar = document.getElementById('statusBar');
+      const vboxStatus = document.getElementById('vbox-status');
+      const hboxStatus = document.getElementById('hbox-status');
       
-      document.getElementById('vbox-status').classList.toggle('active', activeVerticalBoxes.size > 0);
-      document.getElementById('hbox-status').classList.toggle('active', activeHorizontalBoxes.size > 0);
+      vboxStatus.textContent = `V: ${activeVerticalBoxes.size}/8`;
+      hboxStatus.textContent = `H: ${activeHorizontalBoxes.size}/3`;
+      
+      vboxStatus.classList.toggle('active', activeVerticalBoxes.size > 0);
+      hboxStatus.classList.toggle('active', activeHorizontalBoxes.size > 0);
+      
+      statusBar.classList.toggle('active', activeVerticalBoxes.size > 0 || activeHorizontalBoxes.size > 0);
     }
 
-    // Enhanced gesture controls
+    // Gesture Detection
+    function setupGestureDetection() {
+      const gestureBottom = document.getElementById('gestureBottom');
+      const gestureRight = document.getElementById('gestureRight');
+      const gestureLeft = document.getElementById('gestureLeft');
+
+      // Bottom gesture zone (for vertical boxes)
+      gestureBottom.addEventListener('touchstart', (e) => {
+        gestureStartY = e.touches[0].clientY;
+        currentGestureZone = 'bottom';
+      });
+
+      gestureBottom.addEventListener('touchmove', (e) => {
+        if (currentGestureZone !== 'bottom') return;
+        e.preventDefault();
+      });
+
+      gestureBottom.addEventListener('touchend', (e) => {
+        if (currentGestureZone !== 'bottom') return;
+        
+        const deltaY = gestureStartY - e.changedTouches[0].clientY;
+        if (deltaY > 50) { // Swipe up threshold
+          // Show next available vertical box
+          const nextBoxId = activeVerticalBoxes.size + 1;
+          if (nextBoxId <= 8) {
+            showVerticalBox(nextBoxId);
+          }
+        }
+        currentGestureZone = null;
+      });
+
+      // Right gesture zone (for horizontal boxes)
+      gestureRight.addEventListener('touchstart', (e) => {
+        gestureStartX = e.touches[0].clientX;
+        currentGestureZone = 'right';
+      });
+
+      gestureRight.addEventListener('touchmove', (e) => {
+        if (currentGestureZone !== 'right') return;
+        e.preventDefault();
+      });
+
+      gestureRight.addEventListener('touchend', (e) => {
+        if (currentGestureZone !== 'right') return;
+        
+        const deltaX = gestureStartX - e.changedTouches[0].clientX;
+        if (deltaX > 30) { // Swipe left threshold
+          // Show next available horizontal box
+          const nextBoxId = activeHorizontalBoxes.size + 1;
+          if (nextBoxId <= 3) {
+            showHorizontalBox(nextBoxId);
+          }
+        }
+        currentGestureZone = null;
+      });
+
+      // Left gesture zone (for horizontal boxes)
+      gestureLeft.addEventListener('touchstart', (e) => {
+        gestureStartX = e.touches[0].clientX;
+        currentGestureZone = 'left';
+      });
+
+      gestureLeft.addEventListener('touchmove', (e) => {
+        if (currentGestureZone !== 'left') return;
+        e.preventDefault();
+      });
+
+      gestureLeft.addEventListener('touchend', (e) => {
+        if (currentGestureZone !== 'left') return;
+        
+        const deltaX = e.changedTouches[0].clientX - gestureStartX;
+        if (deltaX > 30) { // Swipe right threshold
+          // Show next available horizontal box
+          const nextBoxId = activeHorizontalBoxes.size + 1;
+          if (nextBoxId <= 3) {
+            showHorizontalBox(nextBoxId);
+          }
+        }
+        currentGestureZone = null;
+      });
+    }
+
+    // Enhanced box swipe-to-dismiss gestures
     function setupBoxGestures(box, type, id) {
       let startPos = { x: 0, y: 0 };
       let currentPos = { x: 0, y: 0 };
@@ -961,47 +955,9 @@
       box.addEventListener('touchend', (e) => {
         if (!isDragging) return;
         isDragging = false;
-        box.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        box.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-        const threshold = 100;
-        
-        if (type === 'vertical' && currentPos.y > threshold) {
-          hideVerticalBox(id);
-        } else if (type === 'horizontal' && currentPos.x < -threshold) {
-          hideHorizontalBox(id);
-        } else {
-          box.style.transform = '';
-        }
-      });
-
-      // Mouse events for desktop
-      box.addEventListener('mousedown', (e) => {
-        startPos.x = e.clientX;
-        startPos.y = e.clientY;
-        isDragging = true;
-        box.style.transition = 'none';
-        e.preventDefault();
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        
-        currentPos.x = e.clientX - startPos.x;
-        currentPos.y = e.clientY - startPos.y;
-
-        if (type === 'vertical') {
-          box.style.transform = `translateY(${Math.max(0, currentPos.y)}px)`;
-        } else {
-          box.style.transform = `translateX(${Math.min(0, currentPos.x)}px)`;
-        }
-      });
-
-      document.addEventListener('mouseup', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        box.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-        const threshold = 100;
+        const threshold = 80;
         
         if (type === 'vertical' && currentPos.y > threshold) {
           hideVerticalBox(id);
@@ -1013,15 +969,14 @@
       });
     }
 
-    // Keyboard shortcuts
+    // Keyboard shortcuts (for testing)
     document.addEventListener('keydown', (e) => {
       if (e.key >= '1' && e.key <= '8') {
         const boxNum = parseInt(e.key);
-        toggleVerticalBox(boxNum);
-      } else if (e.key.toLowerCase() === 'h') {
-        const nextHBox = Array.from(activeHorizontalBoxes).length + 1;
-        if (nextHBox <= 3) {
-          toggleHorizontalBox(nextHBox);
+        if (activeVerticalBoxes.has(boxNum)) {
+          hideVerticalBox(boxNum);
+        } else {
+          showVerticalBox(boxNum);
         }
       } else if (e.key === 'Escape') {
         activeVerticalBoxes.forEach(id => hideVerticalBox(id));
@@ -1032,11 +987,8 @@
     // Initialize the application
     document.addEventListener('DOMContentLoaded', () => {
       createConstellation();
+      setupGestureDetection();
       updateStatusIndicators();
-      
-      setTimeout(() => {
-        showVerticalBox(1);
-      }, 1000);
     });
   </script>
 </body>
