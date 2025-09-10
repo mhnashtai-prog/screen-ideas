@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTUITY - Full Screen Kids Carousel</title>
+  <title>INTUITY - Reading Part 5</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -28,6 +28,9 @@
       --intuity-teal: #26a69a;
       --blur: blur(10px);
       --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      --correct-color: #32d74b;
+      --incorrect-color: #ff9500;
+      --highlight-color: rgba(50, 215, 75, 0.3);
     }
 
     * {
@@ -40,9 +43,9 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
       color: var(--text-primary);
-      min-height: 100vh;
+      height: 100vh;
       line-height: 1.4;
-      overflow-x: hidden;
+      overflow: hidden;
       touch-action: pan-y;
       font-size: 16px;
     }
@@ -77,24 +80,28 @@
       100% { opacity: 0.8; }
     }
 
+    /* Header */
     .header {
-      position: sticky;
-      top: 0;
+      position: relative;
       z-index: 100;
       background: rgba(26, 35, 50, 0.95);
       backdrop-filter: var(--blur);
       border-bottom: 1px solid var(--card-border);
       padding: 12px 16px;
+      flex-shrink: 0;
     }
 
     .header-content {
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
+      position: relative;
     }
 
     .brand-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--intuity-gold) 0%, var(--intuity-teal) 100%);
       -webkit-background-clip: text;
@@ -103,282 +110,300 @@
       margin-bottom: 4px;
     }
 
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    .author-credit {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    /* Main Content Container - Full Width */
-    .main-container {
-      width: 100%;
-      padding: 16px;
-      position: relative;
-      z-index: 10;
-      min-height: calc(100vh - 120px);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .text-display-container {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      line-height: 1.4;
-      font-size: 0.9rem;
-      box-shadow: var(--shadow);
-      backdrop-filter: var(--blur);
-      text-align: center;
-    }
-
-    .text-paragraph {
-      margin-bottom: 8px;
-    }
-
-    .text-highlight {
-      background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 600;
-    }
-
-    /* Carousel Container - Full Screen Optimized */
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      height: calc(100vh - 280px);
-      min-height: 400px;
-      overflow: hidden;
-      border-radius: 16px;
-      margin: 16px 0;
-      touch-action: pan-x;
-      flex-grow: 1;
-    }
-
-    .carousel-track {
-      display: flex;
-      width: 800%; /* 8 boxes × 100% */
-      height: 100%;
-      transition: transform 0.3s ease-out;
-      will-change: transform;
-    }
-
-    .carousel-track.dragging {
-      transition: none;
-    }
-
-    .carousel-slide {
-      width: 12.5%; /* 100% / 8 boxes */
-      height: 100%;
-      flex-shrink: 0;
-      padding: 0 8px;
-    }
-
-    .carousel-box {
-      width: 100%;
-      height: 100%;
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      overflow-y: auto;
-      position: relative;
-      touch-action: pan-y;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Individual box styling */
-    .carousel-box.box-1 { background: linear-gradient(135deg, var(--card-bg), rgba(244, 162, 97, 0.15)); }
-    .carousel-box.box-2 { background: linear-gradient(135deg, var(--card-bg), rgba(45, 212, 191, 0.15)); }
-    .carousel-box.box-3 { background: linear-gradient(135deg, var(--card-bg), rgba(50, 215, 75, 0.15)); }
-    .carousel-box.box-4 { background: linear-gradient(135deg, var(--card-bg), rgba(255, 149, 0, 0.15)); }
-    .carousel-box.box-5 { background: linear-gradient(135deg, var(--card-bg), rgba(196, 69, 54, 0.15)); }
-    .carousel-box.box-6 { background: linear-gradient(135deg, var(--card-bg), rgba(139, 92, 246, 0.15)); }
-    .carousel-box.box-7 { background: linear-gradient(135deg, var(--card-bg), rgba(236, 72, 153, 0.15)); }
-    .carousel-box.box-8 { background: linear-gradient(135deg, var(--card-bg), rgba(34, 197, 94, 0.15)); }
-
-    /* Box Headers */
-    .box-header {
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      flex-shrink: 0;
-    }
-
-    .box-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-      text-align: center;
-    }
-
-    /* Box Content */
-    .box-content {
-      font-size: 0.85rem;
-      line-height: 1.4;
-      color: var(--text-secondary);
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .box-feature {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 12px;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .box-feature:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--accent-lime);
-    }
-
-    .feature-icon {
+    .page-title {
       font-size: 1rem;
-      margin-right: 8px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
     }
 
-    /* Carousel Navigation */
-    .carousel-nav {
+    .header-nav {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 24px;
-      margin-top: 16px;
-      flex-shrink: 0;
+      width: 100%;
+      position: relative;
     }
 
     .nav-btn {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      border-radius: 8px;
+      padding: 8px 16px;
       color: var(--text-primary);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
+      font-size: 0.85rem;
       transition: all 0.2s ease;
       backdrop-filter: var(--blur);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-btn:hover {
       background: var(--accent-gold);
       color: #000;
-      transform: scale(1.1);
+      transform: translateY(-1px);
     }
 
-    .nav-btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      transform: scale(1);
+    .author-credit {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      pointer-events: none;
     }
 
-    /* Carousel Indicators */
-    .carousel-indicators {
+    /* Main Container */
+    .main-container {
       display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 16px;
+      flex-direction: column;
+      height: calc(100vh - 120px);
+      padding: 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Reading Passage Area - 80% of space */
+    .reading-container {
+      flex: 1;
+      margin: 16px;
+      margin-bottom: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: var(--blur);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .reading-content {
+      line-height: 1.6;
+      font-size: 1rem;
+      color: var(--text-primary);
+      text-align: justify;
+    }
+
+    .reading-placeholder {
+      color: var(--text-secondary);
+      font-style: italic;
+      text-align: center;
+      padding: 40px 20px;
+      border: 2px dashed var(--card-border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .highlighted-text {
+      background: var(--highlight-color);
+      padding: 2px 4px;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    /* Question Area - Compressed */
+    .question-container {
+      height: 180px;
+      margin: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
       flex-shrink: 0;
     }
 
-    .indicator {
-      width: 10px;
-      height: 10px;
+    .question-track {
+      display: flex;
+      width: 600%; /* 6 questions × 100% */
+      height: 100%;
+      transition: transform 0.3s ease-out;
+      will-change: transform;
+    }
+
+    .question-track.dragging {
+      transition: none;
+    }
+
+    .question-slide {
+      width: 16.666%; /* 100% / 6 questions */
+      height: 100%;
+      flex-shrink: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .question-number {
+      font-weight: 600;
+      color: var(--accent-gold);
+      font-size: 0.9rem;
+    }
+
+    .question-progress {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .question-text {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .option {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      min-height: 36px;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-teal);
+    }
+
+    .option.selected {
+      background: var(--accent-teal);
+      color: #000;
+      border-color: var(--accent-teal);
+    }
+
+    .option.correct {
+      background: var(--correct-color);
+      color: #000;
+      border-color: var(--correct-color);
+    }
+
+    .option.incorrect {
+      background: var(--incorrect-color);
+      color: #000;
+      border-color: var(--incorrect-color);
+    }
+
+    .option-label {
+      font-weight: 600;
+      margin-right: 8px;
+      min-width: 16px;
+    }
+
+    /* Question Navigation */
+    .question-nav {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+      z-index: 10;
+    }
+
+    .question-indicator {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.3);
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .indicator.active {
+    .question-indicator.active {
       background: var(--accent-gold);
-      transform: scale(1.4);
+      transform: scale(1.3);
     }
 
-    /* Status Display */
-    .status-display {
-      position: fixed;
-      top: 90px;
-      right: 16px;
-      background: var(--card-bg);
+    /* Footer */
+    .footer {
+      padding: 12px 16px;
+      background: rgba(26, 35, 50, 0.95);
       backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      z-index: 200;
-      transition: all 0.2s ease;
-    }
-
-    .status-display.active {
-      background: var(--accent-lime);
-      color: #000;
-      border-color: var(--accent-lime);
-    }
-
-    /* Gesture Hints */
-    .gesture-hints {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-top: 12px;
-      opacity: 0;
-      animation: fadeInOut 4s ease-in-out infinite;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-shrink: 0;
     }
 
-    @keyframes fadeInOut {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 0.5; }
+    .score-display {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--accent-lime);
     }
 
-    .gesture-icon {
-      font-size: 1rem;
-      margin: 0 8px;
-      display: inline-block;
+    .check-answers-btn {
+      background: var(--accent-gold);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .check-answers-btn:hover {
+      background: var(--accent-teal);
+      transform: translateY(-1px);
+    }
+
+    .check-answers-btn:disabled {
+      background: var(--text-muted);
+      cursor: not-allowed;
+      transform: none;
     }
 
     /* Mobile Optimizations */
     @media (max-width: 768px) {
-      .main-container {
-        padding: 12px;
+      .brand-name {
+        font-size: 1.5rem;
       }
 
-      .carousel-container {
-        height: calc(100vh - 260px);
-        min-height: 380px;
-      }
-
-      .carousel-box {
+      .reading-container {
         padding: 16px;
+        margin: 12px;
       }
 
-      .nav-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
+      .question-container {
+        height: 160px;
+        margin: 8px 12px;
+      }
+
+      .question-slide {
+        padding: 12px;
       }
     }
 
@@ -388,49 +413,26 @@
       }
 
       .brand-name {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
       }
 
-      .main-container {
-        padding: 8px;
-      }
-
-      .carousel-container {
-        height: calc(100vh - 240px);
-        min-height: 350px;
-      }
-      
-      .carousel-box {
-        padding: 12px;
-      }
-
-      .box-content {
+      .nav-btn {
+        padding: 6px 12px;
         font-size: 0.8rem;
       }
 
-      .box-title {
-        font-size: 1.1rem;
-      }
-    }
-
-    /* Landscape orientation adjustments */
-    @media (orientation: landscape) and (max-height: 500px) {
-      .carousel-container {
-        height: calc(100vh - 180px);
-        min-height: 250px;
+      .author-credit {
+        font-size: 0.7rem;
       }
 
-      .header {
-        padding: 8px 12px;
-      }
-
-      .brand-name {
-        font-size: 1.4rem;
-      }
-
-      .text-display-container {
+      .reading-container {
         padding: 12px;
-        margin-bottom: 12px;
+        margin: 8px;
+      }
+
+      .question-container {
+        height: 150px;
+        margin: 6px 8px;
       }
     }
   </style>
@@ -441,262 +443,249 @@
   <header class="header">
     <div class="header-content">
       <div class="brand-name">INTUITY</div>
-      <div class="subtitle">Full Screen Kids Carousel</div>
-      <div class="author-credit">by Majid Nashtai</div>
+      <div class="page-title">Reading Part 5</div>
+      <div class="header-nav">
+        <a href="#" class="nav-btn" id="homeBtn">
+          <i class="fas fa-home"></i> HOME
+        </a>
+        <div class="author-credit">by Majid Nashtai</div>
+        <a href="#" class="nav-btn" id="backBtn">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </div>
     </div>
   </header>
 
   <div class="main-container">
-    <div class="text-display-container">
-      <div class="text-paragraph">
-        Welcome to <span class="text-highlight">Full Screen Carousel</span> - swipe through 8 awesome boxes!
-      </div>
-      <div class="text-paragraph">
-        <strong>Swipe left or right</strong> to explore cool features on your full screen.
+    <!-- Reading Passage Area -->
+    <div class="reading-container">
+      <div class="reading-content">
+        <div class="reading-placeholder">
+          📖 Reading passage will appear here<br>
+          <small>Full Cambridge B2 Part 5 text for comprehension</small>
+        </div>
       </div>
     </div>
 
-    <!-- Carousel Container -->
-    <div class="carousel-container" id="carouselContainer">
-      <div class="carousel-track" id="carouselTrack">
+    <!-- Question Area -->
+    <div class="question-container" id="questionContainer">
+      <div class="question-track" id="questionTrack">
         
-        <!-- Box 1: Learning Analytics -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-1">
-            <div class="box-header">
-              <div class="box-title">🔥 Learning Analytics</div>
+        <!-- Question 1 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 1</div>
+            <div class="question-progress">1/6</div>
+          </div>
+          <div class="question-text">
+            What is the writer's main purpose in the first paragraph?
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="1" data-option="A">
+              <span class="option-label">A</span>
+              <span>To introduce a controversial topic</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-chart-line feature-icon"></i>
-                <strong>Progress Tracking:</strong> See how you're doing with cool charts and graphs!
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-target feature-icon"></i>
-                <strong>Goal Setting:</strong> Set awesome targets and reach them step by step.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-brain feature-icon"></i>
-                <strong>Smart Tips:</strong> Get helpful suggestions from your AI learning buddy.
-              </div>
+            <div class="option" data-question="1" data-option="B">
+              <span class="option-label">B</span>
+              <span>To provide historical context</span>
+            </div>
+            <div class="option" data-question="1" data-option="C">
+              <span class="option-label">C</span>
+              <span>To explain a personal experience</span>
+            </div>
+            <div class="option" data-question="1" data-option="D">
+              <span class="option-label">D</span>
+              <span>To outline future developments</span>
             </div>
           </div>
         </div>
 
-        <!-- Box 2: Interactive Content -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-2">
-            <div class="box-header">
-              <div class="box-title">💡 Fun Content</div>
+        <!-- Question 2 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 2</div>
+            <div class="question-progress">2/6</div>
+          </div>
+          <div class="question-text">
+            According to the text, what surprised the researchers?
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="2" data-option="A">
+              <span class="option-label">A</span>
+              <span>The speed of the changes</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-play feature-icon"></i>
-                <strong>Cool Videos:</strong> Watch amazing videos, animations, and interactive stuff.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-gamepad feature-icon"></i>
-                <strong>Fun Games:</strong> Learn by playing exciting games and challenges.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-users feature-icon"></i>
-                <strong>Learn Together:</strong> Connect and learn with your friends in real-time.
-              </div>
+            <div class="option" data-question="2" data-option="B">
+              <span class="option-label">B</span>
+              <span>The lack of public interest</span>
+            </div>
+            <div class="option" data-question="2" data-option="C">
+              <span class="option-label">C</span>
+              <span>The complexity of the problem</span>
+            </div>
+            <div class="option" data-question="2" data-option="D">
+              <span class="option-label">D</span>
+              <span>The government's response</span>
             </div>
           </div>
         </div>
 
-        <!-- Box 3: Assessment Tools -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-3">
-            <div class="box-header">
-              <div class="box-title">🎯 Quiz Time</div>
+        <!-- Question 3 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 3</div>
+            <div class="question-progress">3/6</div>
+          </div>
+          <div class="question-text">
+            The word 'significant' in line 15 is closest in meaning to...
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="3" data-option="A">
+              <span class="option-label">A</span>
+              <span>important</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-clipboard-check feature-icon"></i>
-                <strong>Smart Quizzes:</strong> Take quizzes that match your learning level perfectly.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-stopwatch feature-icon"></i>
-                <strong>Speed Challenges:</strong> Race against time and beat your best scores!
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-medal feature-icon"></i>
-                <strong>Awesome Rewards:</strong> Earn cool badges and certificates for your wins.
-              </div>
+            <div class="option" data-question="3" data-option="B">
+              <span class="option-label">B</span>
+              <span>obvious</span>
+            </div>
+            <div class="option" data-question="3" data-option="C">
+              <span class="option-label">C</span>
+              <span>recent</span>
+            </div>
+            <div class="option" data-question="3" data-option="D">
+              <span class="option-label">D</span>
+              <span>final</span>
             </div>
           </div>
         </div>
 
-        <!-- Box 4: Personalization -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-4">
-            <div class="box-header">
-              <div class="box-title">🌟 Make it Yours</div>
+        <!-- Question 4 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 4</div>
+            <div class="question-progress">4/6</div>
+          </div>
+          <div class="question-text">
+            What can be inferred about the author's attitude?
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="4" data-option="A">
+              <span class="option-label">A</span>
+              <span>Optimistic about future changes</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-palette feature-icon"></i>
-                <strong>Custom Themes:</strong> Pick your favorite colors and make it look amazing.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-cog feature-icon"></i>
-                <strong>Smart Interface:</strong> The app learns what you like and gets better for you.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-language feature-icon"></i>
-                <strong>Your Language:</strong> Choose any language you want to learn in.
-              </div>
+            <div class="option" data-question="4" data-option="B">
+              <span class="option-label">B</span>
+              <span>Concerned about current trends</span>
+            </div>
+            <div class="option" data-question="4" data-option="C">
+              <span class="option-label">C</span>
+              <span>Neutral towards the topic</span>
+            </div>
+            <div class="option" data-question="4" data-option="D">
+              <span class="option-label">D</span>
+              <span>Critical of previous research</span>
             </div>
           </div>
         </div>
 
-        <!-- Box 5: Content Library -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-5">
-            <div class="box-header">
-              <div class="box-title">📚 Huge Library</div>
+        <!-- Question 5 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 5</div>
+            <div class="question-progress">5/6</div>
+          </div>
+          <div class="question-text">
+            Which statement best summarizes the final paragraph?
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="5" data-option="A">
+              <span class="option-label">A</span>
+              <span>Solutions are being implemented</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-book feature-icon"></i>
-                <strong>Tons of Stuff:</strong> Thousands of books, stories, and learning materials.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-search feature-icon"></i>
-                <strong>Find Anything:</strong> Search for exactly what you want to learn about.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-bookmark feature-icon"></i>
-                <strong>Save Favorites:</strong> Keep all your favorite content in one place.
-              </div>
+            <div class="option" data-question="5" data-option="B">
+              <span class="option-label">B</span>
+              <span>More research is needed</span>
+            </div>
+            <div class="option" data-question="5" data-option="C">
+              <span class="option-label">C</span>
+              <span>The problem is getting worse</span>
+            </div>
+            <div class="option" data-question="5" data-option="D">
+              <span class="option-label">D</span>
+              <span>Public awareness is increasing</span>
             </div>
           </div>
         </div>
 
-        <!-- Box 6: Advanced Features -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-6">
-            <div class="box-header">
-              <div class="box-title">🔬 Super Cool Features</div>
-            </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-magic feature-icon"></i>
-                <strong>AI Teacher:</strong> Your personal smart assistant that helps you learn better.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-microscope feature-icon"></i>
-                <strong>Deep Analysis:</strong> See detailed reports on how awesome you're doing.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-rocket feature-icon"></i>
-                <strong>Super Learning:</strong> Special techniques to help you learn faster than ever!
-              </div>
-            </div>
+        <!-- Question 6 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 6</div>
+            <div class="question-progress">6/6</div>
           </div>
-        </div>
-
-        <!-- Box 7: Communication -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-7">
-            <div class="box-header">
-              <div class="box-title">💬 Chat & Talk</div>
-            </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-comments feature-icon"></i>
-                <strong>Live Chat:</strong> Talk instantly with your teachers and friends.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-video feature-icon"></i>
-                <strong>Video Calls:</strong> See your teacher face-to-face for personal help.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-question-circle feature-icon"></i>
-                <strong>Ask Questions:</strong> Get help whenever you need it from the community.
-              </div>
-            </div>
+          <div class="question-text">
+            The main theme of the passage is...
           </div>
-        </div>
-
-        <!-- Box 8: Integration -->
-        <div class="carousel-slide">
-          <div class="carousel-box box-8">
-            <div class="box-header">
-              <div class="box-title">🌐 Connect Everything</div>
+          <div class="options-container">
+            <div class="option" data-question="6" data-option="A">
+              <span class="option-label">A</span>
+              <span>technological advancement</span>
             </div>
-            <div class="box-content">
-              <div class="box-feature">
-                <i class="fas fa-cloud feature-icon"></i>
-                <strong>Cloud Magic:</strong> Your progress follows you everywhere you go.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-mobile-alt feature-icon"></i>
-                <strong>All Devices:</strong> Use it on your phone, tablet, or computer.
-              </div>
-              <div class="box-feature">
-                <i class="fas fa-plug feature-icon"></i>
-                <strong>Cool Connections:</strong> Works perfectly with other apps you love.
-              </div>
+            <div class="option" data-question="6" data-option="B">
+              <span class="option-label">B</span>
+              <span>environmental protection</span>
+            </div>
+            <div class="option" data-question="6" data-option="C">
+              <span class="option-label">C</span>
+              <span>social development</span>
+            </div>
+            <div class="option" data-question="6" data-option="D">
+              <span class="option-label">D</span>
+              <span>economic growth</span>
             </div>
           </div>
         </div>
 
       </div>
-    </div>
 
-    <!-- Navigation Controls -->
-    <div class="carousel-nav">
-      <button class="nav-btn" id="prevBtn">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <button class="nav-btn" id="nextBtn">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-    </div>
-
-    <!-- Carousel Indicators -->
-    <div class="carousel-indicators" id="indicators">
-      <div class="indicator active" data-slide="0"></div>
-      <div class="indicator" data-slide="1"></div>
-      <div class="indicator" data-slide="2"></div>
-      <div class="indicator" data-slide="3"></div>
-      <div class="indicator" data-slide="4"></div>
-      <div class="indicator" data-slide="5"></div>
-      <div class="indicator" data-slide="6"></div>
-      <div class="indicator" data-slide="7"></div>
-    </div>
-
-    <!-- Gesture Hints -->
-    <div class="gesture-hints">
-      <i class="fas fa-hand-point-left gesture-icon"></i>
-      Swipe to explore more
-      <i class="fas fa-hand-point-right gesture-icon"></i>
+      <!-- Question Navigation Indicators -->
+      <div class="question-nav" id="questionNav">
+        <div class="question-indicator active" data-question="0"></div>
+        <div class="question-indicator" data-question="1"></div>
+        <div class="question-indicator" data-question="2"></div>
+        <div class="question-indicator" data-question="3"></div>
+        <div class="question-indicator" data-question="4"></div>
+        <div class="question-indicator" data-question="5"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Status Display -->
-  <div class="status-display active" id="statusDisplay">
-    1/8
-  </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="score-display" id="scoreDisplay">
+      Score: 0/6
+    </div>
+    <button class="check-answers-btn" id="checkAnswersBtn">
+      Check Answers
+    </button>
+  </footer>
 
   <script>
     // Global state
-    let currentSlide = 0;
-    const totalSlides = 8;
+    let currentQuestion = 0;
+    const totalQuestions = 6;
+    let userAnswers = {};
+    let correctAnswers = { 1: 'B', 2: 'A', 3: 'A', 4: 'B', 5: 'D', 6: 'B' }; // Example answers
+    let answersChecked = false;
     let startX = 0;
     let isDragging = false;
-    let dragStartTime = 0;
 
     // DOM elements
-    const carouselContainer = document.getElementById('carouselContainer');
-    const carouselTrack = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const statusDisplay = document.getElementById('statusDisplay');
-    const indicators = document.querySelectorAll('.indicator');
+    const questionContainer = document.getElementById('questionContainer');
+    const questionTrack = document.getElementById('questionTrack');
+    const questionNav = document.getElementById('questionNav');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+    const indicators = document.querySelectorAll('.question-indicator');
 
     // Create constellation background
     function createConstellation() {
@@ -711,53 +700,105 @@
       }
     }
 
-    // Update carousel position
-    function updateCarousel() {
-      const translateX = -currentSlide * (100 / totalSlides);
-      carouselTrack.style.transform = `translateX(${translateX}%)`;
-      
-      // Update status
-      statusDisplay.textContent = `${currentSlide + 1}/8`;
+    // Update question position
+    function updateQuestion() {
+      const translateX = -currentQuestion * (100 / totalQuestions);
+      questionTrack.style.transform = `translateX(${translateX}%)`;
       
       // Update indicators
       indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === currentSlide);
+        indicator.classList.toggle('active', index === currentQuestion);
       });
-      
-      // Update navigation buttons
-      prevBtn.disabled = currentSlide === 0;
-      nextBtn.disabled = currentSlide === totalSlides - 1;
     }
 
-    // Navigate to specific slide
-    function goToSlide(slideIndex) {
-      if (slideIndex < 0 || slideIndex >= totalSlides) return;
+    // Navigate to specific question
+    function goToQuestion(questionIndex) {
+      if (questionIndex < 0 || questionIndex >= totalQuestions) return;
       
-      currentSlide = slideIndex;
-      carouselTrack.classList.remove('dragging');
-      updateCarousel();
+      currentQuestion = questionIndex;
+      questionTrack.classList.remove('dragging');
+      updateQuestion();
     }
 
-    // Navigate to next slide
-    function nextSlide() {
-      if (currentSlide < totalSlides - 1) {
-        goToSlide(currentSlide + 1);
+    // Handle option selection
+    function selectOption(questionNum, option) {
+      if (answersChecked) return;
+      
+      // Remove previous selection for this question
+      const questionSlide = document.querySelector(`[data-question="${questionNum}"]`).closest('.question-slide');
+      questionSlide.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+      
+      // Select new option
+      const selectedOption = document.querySelector(`[data-question="${questionNum}"][data-option="${option}"]`);
+      selectedOption.classList.add('selected');
+      
+      // Store answer
+      userAnswers[questionNum] = option;
+      
+      // Update score display
+      updateScore();
+    }
+
+    // Update score
+    function updateScore() {
+      const correctCount = Object.keys(userAnswers).filter(q => 
+        userAnswers[q] === correctAnswers[q]
+      ).length;
+      
+      scoreDisplay.textContent = `Score: ${correctCount}/${totalQuestions}`;
+    }
+
+    // Check answers
+    function checkAnswers() {
+      answersChecked = true;
+      checkAnswersBtn.disabled = true;
+      checkAnswersBtn.textContent = 'Answers Checked';
+      
+      // Mark all options
+      for (let questionNum = 1; questionNum <= totalQuestions; questionNum++) {
+        const questionSlide = document.querySelector(`[data-question="${questionNum}"]`).closest('.question-slide');
+        const options = questionSlide.querySelectorAll('.option');
+        
+        options.forEach(option => {
+          const optionLetter = option.getAttribute('data-option');
+          const isCorrect = optionLetter === correctAnswers[questionNum];
+          const wasSelected = userAnswers[questionNum] === optionLetter;
+          
+          if (isCorrect) {
+            option.classList.add('correct');
+          } else if (wasSelected && !isCorrect) {
+            option.classList.add('incorrect');
+          }
+        });
+      }
+      
+      // Highlight text passages (placeholder)
+      highlightTextPassages();
+      
+      // Final score update
+      updateScore();
+    }
+
+    // Highlight text passages where answers were found
+    function highlightTextPassages() {
+      // This would highlight relevant parts of the reading passage
+      // For now, just a placeholder implementation
+      const readingContent = document.querySelector('.reading-content');
+      if (readingContent.querySelector('.reading-placeholder')) {
+        readingContent.innerHTML = `
+          <div class="reading-placeholder">
+            📖 Reading passage with <span class="highlighted-text">highlighted answers</span> will appear here<br>
+            <small>Text sections where answers were found would be highlighted in lime</small>
+          </div>
+        `;
       }
     }
 
-    // Navigate to previous slide
-    function prevSlide() {
-      if (currentSlide > 0) {
-        goToSlide(currentSlide - 1);
-      }
-    }
-
-    // Simplified touch handling
+    // Touch handling for question swiping
     function handleStart(e) {
       isDragging = true;
-      dragStartTime = Date.now();
       startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-      carouselTrack.classList.add('dragging');
+      questionTrack.classList.add('dragging');
     }
 
     function handleMove(e) {
@@ -766,76 +807,77 @@
       e.preventDefault();
       const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       const deltaX = currentX - startX;
-      const currentTranslate = -currentSlide * (100 / totalSlides);
-      const dragPercent = (deltaX / carouselContainer.offsetWidth) * 12.5; // 12.5% per slide
+      const currentTranslate = -currentQuestion * (100 / totalQuestions);
+      const dragPercent = (deltaX / questionContainer.offsetWidth) * 16.666; // 16.666% per slide
       
-      carouselTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
+      questionTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
     }
 
     function handleEnd(e) {
       if (!isDragging) return;
       
       isDragging = false;
-      carouselTrack.classList.remove('dragging');
+      questionTrack.classList.remove('dragging');
       
       const endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
       const deltaX = endX - startX;
-      const dragTime = Date.now() - dragStartTime;
-      const velocity = Math.abs(deltaX) / dragTime;
+      const threshold = 50;
       
-      // More sensitive thresholds for larger screens
-      const threshold = 40;
-      const fastSwipe = velocity > 0.3;
-      
-      if ((Math.abs(deltaX) > threshold) || fastSwipe) {
-        if (deltaX > 0 && currentSlide > 0) {
-          // Swipe right - go to previous slide
-          prevSlide();
-        } else if (deltaX < 0 && currentSlide < totalSlides - 1) {
-          // Swipe left - go to next slide
-          nextSlide();
+      if (Math.abs(deltaX) > threshold) {
+        if (deltaX > 0 && currentQuestion > 0) {
+          // Swipe right - previous question
+          goToQuestion(currentQuestion - 1);
+        } else if (deltaX < 0 && currentQuestion < totalQuestions - 1) {
+          // Swipe left - next question
+          goToQuestion(currentQuestion + 1);
         } else {
-          // Snap back to current position
-          updateCarousel();
+          updateQuestion();
         }
       } else {
-        // Snap back to current position
-        updateCarousel();
+        updateQuestion();
       }
     }
 
     // Event listeners
     function setupEventListeners() {
-      // Navigation buttons
-      prevBtn.addEventListener('click', prevSlide);
-      nextBtn.addEventListener('click', nextSlide);
-      
-      // Indicators
-      indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => goToSlide(index));
+      // Option selection
+      document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+          const questionNum = option.getAttribute('data-question');
+          const optionLetter = option.getAttribute('data-option');
+          selectOption(questionNum, optionLetter);
+        });
       });
       
-      // Touch events
-      carouselContainer.addEventListener('touchstart', handleStart, { passive: false });
-      carouselContainer.addEventListener('touchmove', handleMove, { passive: false });
-      carouselContainer.addEventListener('touchend', handleEnd, { passive: false });
+      // Question indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => goToQuestion(index));
+      });
+      
+      // Check answers button
+      checkAnswersBtn.addEventListener('click', checkAnswers);
+      
+      // Touch events for question swiping
+      questionContainer.addEventListener('touchstart', handleStart, { passive: false });
+      questionContainer.addEventListener('touchmove', handleMove, { passive: false });
+      questionContainer.addEventListener('touchend', handleEnd, { passive: false });
       
       // Mouse events (for desktop testing)
-      carouselContainer.addEventListener('mousedown', handleStart);
+      questionContainer.addEventListener('mousedown', handleStart);
       document.addEventListener('mousemove', handleMove);
       document.addEventListener('mouseup', handleEnd);
       
-      // Prevent context menu on long press
-      carouselContainer.addEventListener('contextmenu', e => e.preventDefault());
+      // Prevent context menu
+      questionContainer.addEventListener('contextmenu', e => e.preventDefault());
       
       // Keyboard navigation
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-          prevSlide();
-        } else if (e.key === 'ArrowRight') {
-          nextSlide();
-        } else if (e.key >= '1' && e.key <= '8') {
-          goToSlide(parseInt(e.key) - 1);
+        if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+          goToQuestion(currentQuestion - 1);
+        } else if (e.key === 'ArrowRight' && currentQuestion < totalQuestions - 1) {
+          goToQuestion(currentQuestion + 1);
+        } else if (e.key >= '1' && e.key <= '6') {
+          goToQuestion(parseInt(e.key) - 1);
         }
       });
     }
@@ -844,7 +886,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       createConstellation();
       setupEventListeners();
-      updateCarousel();
+      updateQuestion();
+      updateScore();
     });
   </script>
 </body>
