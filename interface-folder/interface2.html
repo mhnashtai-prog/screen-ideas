@@ -3,27 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTUITY - Invisible Giants</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>INTUITY - Horizontal Carousel Interface</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      --bg-primary: #0f1419;
-      --bg-secondary: #1a2332;
+      --bg-primary: #1a2332;
+      --bg-secondary: #243447;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent-gold: #f4a261;
+      --accent-teal: #2dd4bf;
+      --accent-lime: #32d74b;
+      --accent-orange: #ff9500;
+      --accent-brick: #c44536;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #34d399;
       --text-primary: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.7);
-      --text-muted: rgba(255, 255, 255, 0.4);
-      --accent-subtle: rgba(255, 255, 255, 0.03);
-      --accent-whisper: rgba(255, 255, 255, 0.06);
-      --accent-breath: rgba(255, 255, 255, 0.1);
-      --accent-gold: #ffd54f;
-      --accent-lime: #32d74b;
-      --shadow-subtle: 0 2px 20px rgba(0, 0, 0, 0.1);
-      --shadow-whisper: 0 4px 40px rgba(0, 0, 0, 0.05);
-      --blur-subtle: blur(10px);
-      --transition-ghost: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-      --transition-breath: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --text-muted: rgba(255, 255, 255, 0.5);
+      --intuity-gold: #ffd54f;
+      --intuity-teal: #26a69a;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --blur: blur(20px);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
     * {
@@ -34,16 +43,15 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
       color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.6;
       overflow-x: hidden;
-      cursor: default;
+      touch-action: manipulation;
     }
 
-    /* Invisible Constellation - Only Appears on Deep Focus */
-    .ambient-particles {
+    .constellation-bg {
       position: fixed;
       top: 0;
       left: 0;
@@ -51,879 +59,813 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      opacity: 0;
-      transition: opacity 2s ease;
+      opacity: 0.3;
     }
 
-    .ambient-particles.focused {
-      opacity: 0.1;
-    }
-
-    .particle {
+    .star {
       position: absolute;
-      width: 1px;
-      height: 1px;
+      width: 2px;
+      height: 2px;
       background: var(--accent-gold);
       border-radius: 50%;
-      animation: drift 20s infinite linear;
+      animation: twinkle 3s infinite alternate;
     }
 
-    @keyframes drift {
-      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-      10% { opacity: 0.3; }
-      90% { opacity: 0.3; }
-      100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+    .star:nth-child(even) {
+      animation-delay: 1.5s;
+      background: var(--accent-teal);
     }
 
-    /* Ultra-Minimal Header - Barely There */
-    .presence {
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.8; }
+    }
+
+    .header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(15, 20, 25, 0.7);
-      backdrop-filter: var(--blur-subtle);
-      border-bottom: 1px solid var(--accent-subtle);
-      padding: 1rem 0;
-      text-align: center;
-      transition: var(--transition-ghost);
+      background: rgba(26, 35, 50, 0.9);
+      backdrop-filter: var(--blur);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px;
     }
 
-    .identity {
+    .header-content {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .brand-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-      transition: var(--transition-ghost);
-    }
-
-    .identity:hover {
-      color: var(--text-primary);
-      letter-spacing: 0.15em;
-    }
-
-    /* The Sacred Text - Center of Everything */
-    .sacred-space {
-      max-width: 700px;
-      margin: 4rem auto;
-      padding: 0 2rem;
-      position: relative;
-    }
-
-    .text-vessel {
-      background: var(--accent-subtle);
-      border: 1px solid var(--accent-whisper);
-      border-radius: 1rem;
-      padding: 3rem;
-      line-height: 1.8;
-      font-size: 1.1rem;
-      text-align: center;
-      transition: var(--transition-ghost);
-      position: relative;
-    }
-
-    .text-vessel:hover {
-      background: var(--accent-whisper);
-      border-color: var(--accent-breath);
-    }
-
-    .text-focus {
-      cursor: text;
-      user-select: text;
-      position: relative;
-    }
-
-    .text-focus.selected {
-      background: linear-gradient(135deg, var(--accent-lime), transparent);
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--intuity-gold) 0%, var(--intuity-teal) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      margin-bottom: 8px;
+      position: relative;
     }
 
-    /* Invisible Helpers - The Hidden Giants */
-    .ghost-helpers {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    .helper-zone {
+    .brand-name::after {
+      content: '✨';
       position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      transition: var(--transition-ghost);
+      top: -10px;
+      right: -20px;
+      font-size: 1.5rem;
+      animation: sparkle 3s ease-in-out infinite;
     }
 
-    .helper-zone.summoned {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    /* Translation Helper - Top */
-    .translation-spirit {
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 350px;
-      background: var(--accent-whisper);
-      backdrop-filter: var(--blur-subtle);
-      border: 1px solid var(--accent-breath);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-whisper);
-    }
-
-    /* Vocabulary Helper - Right */
-    .vocabulary-spirit {
-      top: 50%;
-      right: 5%;
-      transform: translateY(-50%);
-      width: 300px;
-      background: var(--accent-whisper);
-      backdrop-filter: var(--blur-subtle);
-      border: 1px solid var(--accent-breath);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-whisper);
-    }
-
-    /* Notes Helper - Left */
-    .notes-spirit {
-      top: 50%;
-      left: 5%;
-      transform: translateY(-50%);
-      width: 300px;
-      background: var(--accent-whisper);
-      backdrop-filter: var(--blur-subtle);
-      border: 1px solid var(--accent-breath);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-whisper);
-    }
-
-    /* AI Helper - Bottom */
-    .ai-spirit {
-      bottom: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 400px;
-      background: var(--accent-whisper);
-      backdrop-filter: var(--blur-subtle);
-      border: 1px solid var(--accent-breath);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-whisper);
-    }
-
-    /* Helper Content Styling */
-    .spirit-header {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--accent-gold);
-      margin-bottom: 1rem;
-      text-align: center;
-      letter-spacing: 0.05em;
-    }
-
-    .spirit-input {
-      width: 100%;
-      background: var(--accent-subtle);
-      border: 1px solid var(--accent-whisper);
-      border-radius: 0.5rem;
-      padding: 0.8rem;
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      font-family: inherit;
-      resize: none;
-      min-height: 60px;
-      transition: var(--transition-breath);
-    }
-
-    .spirit-input:focus {
-      outline: none;
-      border-color: var(--accent-breath);
-      background: var(--accent-whisper);
-    }
-
-    .spirit-input::placeholder {
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    .spirit-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .spirit-btn {
-      flex: 1;
-      background: var(--accent-subtle);
-      border: 1px solid var(--accent-whisper);
-      border-radius: 0.5rem;
-      padding: 0.6rem;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition-breath);
-    }
-
-    .spirit-btn:hover {
-      background: var(--accent-whisper);
-      color: var(--text-primary);
-      border-color: var(--accent-breath);
-    }
-
-    .spirit-result {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: var(--accent-subtle);
-      border-radius: 0.5rem;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      color: var(--text-secondary);
-      display: none;
-    }
-
-    .spirit-result.visible {
-      display: block;
-      animation: breathe-in 0.8s ease;
-    }
-
-    @keyframes breathe-in {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
+    @keyframes sparkle {
+      0%, 100% { 
+        opacity: 0.5; 
+        transform: scale(1) rotate(0deg); 
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      50% { 
+        opacity: 1; 
+        transform: scale(1.3) rotate(180deg); 
       }
     }
 
-    /* Invisible Triggers - Only Felt, Never Seen */
-    .invisible-trigger {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      cursor: pointer;
-      opacity: 0;
-      transition: var(--transition-breath);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .author-credit {
+      font-size: 0.7rem;
       color: var(--text-muted);
-      font-size: 1.2rem;
+      font-weight: 300;
     }
 
-    .invisible-trigger:hover {
-      opacity: 0.3;
-      background: var(--accent-whisper);
-    }
-
-    .invisible-trigger.active {
-      opacity: 0.6;
-      background: var(--accent-breath);
-      color: var(--accent-gold);
-    }
-
-    .trigger-translate { top: 10%; right: 10%; }
-    .trigger-vocab { top: 50%; right: 5%; transform: translateY(-50%); }
-    .trigger-notes { top: 50%; left: 5%; transform: translateY(-50%); }
-    .trigger-ai { bottom: 10%; left: 50%; transform: translateX(-50%); }
-
-    /* Question Interface - Invisible Until Needed */
-    .question-realm {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--accent-whisper);
-      backdrop-filter: var(--blur-subtle);
-      border-top: 1px solid var(--accent-breath);
-      padding: 1rem;
-      transform: translateY(100%);
-      transition: var(--transition-ghost);
-      z-index: 500;
-    }
-
-    .question-realm.visible {
-      transform: translateY(0);
-    }
-
-    .question-content {
+    /* Main Content Container */
+    .main-container {
       max-width: 600px;
       margin: 0 auto;
+      padding: var(--space-xl);
+      position: relative;
+      z-index: 10;
+    }
+
+    .text-display-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      line-height: 1.8;
+      font-size: 1.05rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: var(--blur);
       text-align: center;
     }
 
-    .question-text {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
+    .text-paragraph {
+      margin-bottom: var(--space-lg);
     }
 
-    .options-grid {
-      display: grid;
-      gap: 0.5rem;
-    }
-
-    .option {
-      background: var(--accent-subtle);
-      border: 1px solid var(--accent-whisper);
-      border-radius: 0.5rem;
-      padding: 0.8rem;
-      cursor: pointer;
-      transition: var(--transition-breath);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      font-size: 0.9rem;
-    }
-
-    .option:hover {
-      background: var(--accent-whisper);
-      border-color: var(--accent-breath);
-    }
-
-    .option-label {
-      background: var(--accent-whisper);
-      color: var(--text-primary);
+    .text-highlight {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-weight: 600;
-      font-size: 0.75rem;
-      width: 1.5rem;
-      height: 1.5rem;
+    }
+
+    /* Carousel Container */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      overflow: hidden;
+      border-radius: 1rem;
+      margin: var(--space-xl) 0;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 800%; /* 8 boxes × 100% */
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      touch-action: pan-x;
+    }
+
+    .carousel-slide {
+      width: 12.5%; /* 100% / 8 boxes */
+      height: 100%;
+      flex-shrink: 0;
+      padding: 0 var(--space-sm);
+    }
+
+    .carousel-box {
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: var(--space-lg);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Individual box styling */
+    .carousel-box.box-1 { background: linear-gradient(135deg, var(--card-bg), rgba(244, 162, 97, 0.1)); }
+    .carousel-box.box-2 { background: linear-gradient(135deg, var(--card-bg), rgba(45, 212, 191, 0.1)); }
+    .carousel-box.box-3 { background: linear-gradient(135deg, var(--card-bg), rgba(50, 215, 75, 0.1)); }
+    .carousel-box.box-4 { background: linear-gradient(135deg, var(--card-bg), rgba(255, 149, 0, 0.1)); }
+    .carousel-box.box-5 { background: linear-gradient(135deg, var(--card-bg), rgba(196, 69, 54, 0.1)); }
+    .carousel-box.box-6 { background: linear-gradient(135deg, var(--card-bg), rgba(139, 92, 246, 0.1)); }
+    .carousel-box.box-7 { background: linear-gradient(135deg, var(--card-bg), rgba(236, 72, 153, 0.1)); }
+    .carousel-box.box-8 { background: linear-gradient(135deg, var(--card-bg), rgba(34, 197, 94, 0.1)); }
+
+    /* Box Headers */
+    .box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .box-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    /* Box Content */
+    .box-content {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .box-feature {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+      transition: all 0.3s ease;
+    }
+
+    .box-feature:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-lime);
+    }
+
+    .feature-icon {
+      font-size: 1.2rem;
+      margin-right: var(--space-sm);
+    }
+
+    /* Carousel Navigation */
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: var(--text-primary);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      backdrop-filter: var(--blur);
     }
 
-    .option.selected {
-      background: var(--accent-breath);
-      border-color: var(--accent-lime);
-      color: var(--text-primary);
+    .nav-btn:hover {
+      background: var(--accent-gold);
+      color: #000;
+      transform: scale(1.1);
     }
 
-    .option.selected .option-label {
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: scale(1);
+    }
+
+    /* Carousel Indicators */
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator.active {
+      background: var(--accent-gold);
+      transform: scale(1.5);
+    }
+
+    /* Status Display */
+    .status-display {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 200;
+      transition: all 0.3s ease;
+    }
+
+    .status-display.active {
       background: var(--accent-lime);
       color: #000;
+      border-color: var(--accent-lime);
     }
 
-    /* Focus Detection System */
-    .focus-detector {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
+    /* Gesture Hints */
+    .gesture-hints {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: var(--space-lg);
+      opacity: 0;
+      animation: fadeInOut 4s ease-in-out infinite;
     }
 
-    /* Mobile Adaptations */
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.6; }
+    }
+
+    .gesture-icon {
+      font-size: 1.2rem;
+      margin: 0 var(--space-sm);
+      display: inline-block;
+    }
+
+    /* Mobile Optimizations */
     @media (max-width: 768px) {
-      .sacred-space {
-        margin: 2rem auto;
-        padding: 0 1rem;
+      .brand-name {
+        font-size: 2rem;
       }
 
-      .text-vessel {
-        padding: 2rem;
+      .carousel-container {
+        height: 60vh;
+      }
+
+      .main-container {
+        padding: var(--space-lg);
+      }
+
+      .nav-btn {
+        width: 45px;
+        height: 45px;
         font-size: 1rem;
       }
 
-      .translation-spirit,
-      .ai-spirit {
-        width: 90vw;
-        left: 5vw;
-        transform: none;
+      .box-title {
+        font-size: 1rem;
       }
 
-      .vocabulary-spirit,
-      .notes-spirit {
-        width: 85vw;
-        left: 7.5vw;
-        transform: none;
-        top: auto;
-        bottom: 20%;
-      }
-
-      .invisible-trigger {
-        width: 80px;
-        height: 80px;
-        opacity: 0.1;
+      .box-content {
+        font-size: 0.85rem;
       }
     }
 
-    /* Advanced Text Selection Highlighting */
-    ::selection {
-      background: rgba(50, 215, 75, 0.2);
-      color: var(--text-primary);
-    }
-
-    ::-moz-selection {
-      background: rgba(50, 215, 75, 0.2);
-      color: var(--text-primary);
-    }
-
-    /* Breathing Animation for Deep Focus */
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-
-    .deep-focus {
-      animation: breathe 6s ease-in-out infinite;
-    }
-
-    /* Cursor States */
-    .text-vessel:hover {
-      cursor: text;
-    }
-
-    .helper-zone {
-      cursor: default;
-    }
-
-    /* Ultra-Subtle Accessibility */
-    .invisible-trigger:focus {
-      opacity: 0.5;
-      outline: 1px solid var(--accent-breath);
-    }
-
-    .spirit-input:focus,
-    .spirit-btn:focus,
-    .option:focus {
-      outline: 1px solid var(--accent-breath);
-      outline-offset: 2px;
-    }
-
-    /* Minimalist Footer - Invisible Until Needed */
-    .essence {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      opacity: 0;
-      transition: var(--transition-ghost);
-      pointer-events: none;
-    }
-
-    .essence.visible {
-      opacity: 0.3;
-    }
-
-    .essence:hover {
-      opacity: 0.8;
+    @media (max-width: 480px) {
+      .carousel-container {
+        height: 55vh;
+      }
+      
+      .carousel-box {
+        padding: var(--space-md);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="ambient-particles" id="particles"></div>
-  <div class="focus-detector" id="focusDetector"></div>
+  <div class="constellation-bg" id="constellation"></div>
 
-  <header class="presence">
-    <div class="identity">INTUITY</div>
+  <header class="header">
+    <div class="header-content">
+      <div class="brand-name">INTUITY</div>
+      <div class="subtitle">Horizontal Carousel Interface</div>
+      <div class="author-credit">by Majid Nashtai</div>
+    </div>
   </header>
 
-  <main class="sacred-space">
-    <div class="text-vessel" id="textVessel">
-      <div class="text-focus" id="paragraph1">
-        The rapid advancement of digital technology has fundamentally transformed the landscape of education in the 21st century.
+  <div class="main-container">
+    <div class="text-display-container">
+      <div class="text-paragraph">
+        Welcome to the <span class="text-highlight">Horizontal Carousel Interface</span> - swipe through 8 feature boxes seamlessly.
       </div>
-      <br><br>
-      <div class="text-focus" id="paragraph2">
-        Educational institutions worldwide have embraced various forms of technology integration, from simple presentation tools to sophisticated learning systems.
+      <div class="text-paragraph">
+        This interface showcases <span class="text-highlight">8 interactive boxes</span> in a smooth horizontal carousel.
       </div>
-      <br><br>
-      <div class="text-focus" id="paragraph3">
-        However, the shift to digital education is not without its challenges.
+      <div class="text-paragraph">
+        <strong>Swipe left or right</strong> to navigate, or use the navigation buttons below.
       </div>
-      <br><br>
-      <div class="text-focus" id="paragraph4">
-        Despite these concerns, research suggests that when properly implemented, digital tools can enhance learning outcomes significantly.
-      </div>
-    </div>
-  </main>
-
-  <!-- Invisible Helpers - The Hidden Giants -->
-  <div class="ghost-helpers">
-    <!-- Translation Spirit -->
-    <div class="helper-zone translation-spirit" id="translationSpirit">
-      <div class="spirit-header">Translation</div>
-      <textarea class="spirit-input" placeholder="Selected text appears here..."></textarea>
-      <div class="spirit-actions">
-        <button class="spirit-btn" onclick="translateText()">Translate</button>
-        <button class="spirit-btn" onclick="detectLanguage()">Detect</button>
-      </div>
-      <div class="spirit-result" id="translationResult"></div>
     </div>
 
-    <!-- Vocabulary Spirit -->
-    <div class="helper-zone vocabulary-spirit" id="vocabularySpirit">
-      <div class="spirit-header">Vocabulary</div>
-      <textarea class="spirit-input" placeholder="Word or phrase..."></textarea>
-      <div class="spirit-actions">
-        <button class="spirit-btn" onclick="defineWord()">Define</button>
-        <button class="spirit-btn" onclick="addToVocab()">Save</button>
+    <!-- Carousel Container -->
+    <div class="carousel-container">
+      <div class="carousel-track" id="carouselTrack">
+        
+        <!-- Box 1: Learning Analytics -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-1">
+            <div class="box-header">
+              <div class="box-title">🔥 Learning Analytics</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <strong>Progress Tracking:</strong> Monitor your learning journey with detailed analytics and insights.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-target feature-icon"></i>
+                <strong>Goal Setting:</strong> Set and achieve personalized learning objectives.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-brain feature-icon"></i>
+                <strong>AI Insights:</strong> Get intelligent recommendations based on your performance.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 2: Interactive Content -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-2">
+            <div class="box-header">
+              <div class="box-title">💡 Interactive Content</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-play feature-icon"></i>
+                <strong>Multimedia:</strong> Rich content with videos, animations, and interactive elements.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-gamepad feature-icon"></i>
+                <strong>Gamification:</strong> Learning through engaging games and challenges.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-users feature-icon"></i>
+                <strong>Collaboration:</strong> Connect and learn with peers in real-time.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 3: Assessment Tools -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-3">
+            <div class="box-header">
+              <div class="box-title">🎯 Assessment Tools</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-clipboard-check feature-icon"></i>
+                <strong>Smart Quizzes:</strong> Adaptive assessments that adjust to your skill level.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-stopwatch feature-icon"></i>
+                <strong>Timed Challenges:</strong> Build speed and accuracy with time-based exercises.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-medal feature-icon"></i>
+                <strong>Achievements:</strong> Earn badges and certificates for your accomplishments.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 4: Personalization -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-4">
+            <div class="box-header">
+              <div class="box-title">🌟 Personalization</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-palette feature-icon"></i>
+                <strong>Custom Themes:</strong> Personalize your interface with beautiful themes.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-cog feature-icon"></i>
+                <strong>Adaptive UI:</strong> Interface that learns and adapts to your preferences.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-language feature-icon"></i>
+                <strong>Multi-language:</strong> Support for multiple languages and localization.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 5: Content Library -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-5">
+            <div class="box-header">
+              <div class="box-title">📚 Content Library</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-book feature-icon"></i>
+                <strong>Vast Collection:</strong> Access thousands of learning materials and resources.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-search feature-icon"></i>
+                <strong>Smart Search:</strong> Find exactly what you need with AI-powered search.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-bookmark feature-icon"></i>
+                <strong>Bookmarks:</strong> Save and organize your favorite content for later.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 6: Advanced Features -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-6">
+            <div class="box-header">
+              <div class="box-title">🔬 Advanced Features</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-magic feature-icon"></i>
+                <strong>AI Tutor:</strong> Personal AI assistant to guide your learning process.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-microscope feature-icon"></i>
+                <strong>Deep Analysis:</strong> Detailed performance analysis and insights.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-rocket feature-icon"></i>
+                <strong>Accelerated Learning:</strong> Proven techniques to learn faster and retain more.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 7: Communication -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-7">
+            <div class="box-header">
+              <div class="box-title">💬 Communication</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-comments feature-icon"></i>
+                <strong>Live Chat:</strong> Real-time communication with instructors and peers.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-video feature-icon"></i>
+                <strong>Video Calls:</strong> Face-to-face learning sessions and tutoring.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-question-circle feature-icon"></i>
+                <strong>Q&A Forums:</strong> Get help and share knowledge with the community.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 8: Integration -->
+        <div class="carousel-slide">
+          <div class="carousel-box box-8">
+            <div class="box-header">
+              <div class="box-title">🌐 Integration</div>
+            </div>
+            <div class="box-content">
+              <div class="box-feature">
+                <i class="fas fa-cloud feature-icon"></i>
+                <strong>Cloud Sync:</strong> Access your progress across all devices seamlessly.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-mobile-alt feature-icon"></i>
+                <strong>Mobile Apps:</strong> Native apps for iOS and Android devices.
+              </div>
+              <div class="box-feature">
+                <i class="fas fa-plug feature-icon"></i>
+                <strong>API Access:</strong> Integrate with third-party tools and services.
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="spirit-result" id="vocabularyResult"></div>
     </div>
 
-    <!-- Notes Spirit -->
-    <div class="helper-zone notes-spirit" id="notesSpirit">
-      <div class="spirit-header">Notes</div>
-      <textarea class="spirit-input" placeholder="Your insights..."></textarea>
-      <div class="spirit-actions">
-        <button class="spirit-btn" onclick="saveNote()">Save</button>
-        <button class="spirit-btn" onclick="summarize()">Summarize</button>
-      </div>
-      <div class="spirit-result" id="notesResult"></div>
+    <!-- Navigation Controls -->
+    <div class="carousel-nav">
+      <button class="nav-btn" id="prevBtn">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="nav-btn" id="nextBtn">
+        <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
 
-    <!-- AI Spirit -->
-    <div class="helper-zone ai-spirit" id="aiSpirit">
-      <div class="spirit-header">AI Assistant</div>
-      <textarea class="spirit-input" placeholder="Ask about the text..."></textarea>
-      <div class="spirit-actions">
-        <button class="spirit-btn" onclick="askAI()">Analyze</button>
-        <button class="spirit-btn" onclick="explainContext()">Explain</button>
-      </div>
-      <div class="spirit-result" id="aiResult"></div>
+    <!-- Carousel Indicators -->
+    <div class="carousel-indicators" id="indicators">
+      <div class="indicator active" data-slide="0"></div>
+      <div class="indicator" data-slide="1"></div>
+      <div class="indicator" data-slide="2"></div>
+      <div class="indicator" data-slide="3"></div>
+      <div class="indicator" data-slide="4"></div>
+      <div class="indicator" data-slide="5"></div>
+      <div class="indicator" data-slide="6"></div>
+      <div class="indicator" data-slide="7"></div>
     </div>
 
-    <!-- Invisible Triggers -->
-    <div class="invisible-trigger trigger-translate" onclick="toggleSpirit('translation')" title="Translation">
-      <i class="fas fa-language"></i>
-    </div>
-    <div class="invisible-trigger trigger-vocab" onclick="toggleSpirit('vocabulary')" title="Vocabulary">
-      <i class="fas fa-book"></i>
-    </div>
-    <div class="invisible-trigger trigger-notes" onclick="toggleSpirit('notes')" title="Notes">
-      <i class="fas fa-pen"></i>
-    </div>
-    <div class="invisible-trigger trigger-ai" onclick="toggleSpirit('ai')" title="AI Assistant">
-      <i class="fas fa-brain"></i>
+    <!-- Gesture Hints -->
+    <div class="gesture-hints">
+      <i class="fas fa-hand-point-left gesture-icon"></i>
+      Swipe left or right to explore
+      <i class="fas fa-hand-point-right gesture-icon"></i>
     </div>
   </div>
 
-  <!-- Question Interface - Hidden Until Needed -->
-  <div class="question-realm" id="questionRealm">
-    <div class="question-content">
-      <div class="question-text" id="questionText">
-        What has fundamentally transformed the landscape of education?
-      </div>
-      <div class="options-grid" id="optionsGrid">
-        <div class="option" onclick="selectOption(0)">
-          <span class="option-label">A</span>
-          <span>Traditional teaching methods</span>
-        </div>
-        <div class="option" onclick="selectOption(1)">
-          <span class="option-label">B</span>
-          <span>Digital technology advancement</span>
-        </div>
-        <div class="option" onclick="selectOption(2)">
-          <span class="option-label">C</span>
-          <span>Educational reforms</span>
-        </div>
-      </div>
-    </div>
+  <!-- Status Display -->
+  <div class="status-display active" id="statusDisplay">
+    Box 1 / 8
   </div>
-
-  <div class="essence" id="essence">by Majid Nashtai</div>
 
   <script>
-    // Global State - Minimal and Clean
-    let selectedText = '';
-    let activeSpirits = new Set();
-    let focusLevel = 0;
-    let currentQuestion = 0;
-    let userAnswers = {};
+    // Global state
+    let currentSlide = 0;
+    const totalSlides = 8;
+    let isAnimating = false;
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
 
-    // Ambient Particle System
-    function createAmbientParticles() {
-      const container = document.getElementById('particles');
-      for (let i = 0; i < 15; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        container.appendChild(particle);
+    // DOM elements
+    const carouselTrack = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const statusDisplay = document.getElementById('statusDisplay');
+    const indicators = document.querySelectorAll('.indicator');
+
+    // Create constellation background
+    function createConstellation() {
+      const constellation = document.getElementById('constellation');
+      for (let i = 0; i < 30; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        constellation.appendChild(star);
       }
     }
 
-    // Invisible Spirit Management
-    function toggleSpirit(type) {
-      const spirit = document.getElementById(`${type}Spirit`);
-      const trigger = document.querySelector(`.trigger-${type}`);
+    // Update carousel position
+    function updateCarousel() {
+      if (isAnimating) return;
       
-      if (activeSpirits.has(type)) {
-        hideSpirit(type);
-      } else {
-        showSpirit(type);
-      }
+      const translateX = -currentSlide * (100 / totalSlides);
+      carouselTrack.style.transform = `translateX(${translateX}%)`;
+      
+      // Update status
+      statusDisplay.textContent = `Box ${currentSlide + 1} / ${totalSlides}`;
+      
+      // Update indicators
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentSlide);
+      });
+      
+      // Update navigation buttons
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
     }
 
-    function showSpirit(type) {
-      const spirit = document.getElementById(`${type}Spirit`);
-      const trigger = document.querySelector(`.trigger-${type}`);
-      const input = spirit.querySelector('.spirit-input');
+    // Navigate to specific slide
+    function goToSlide(slideIndex) {
+      if (slideIndex < 0 || slideIndex >= totalSlides || isAnimating) return;
       
-      spirit.classList.add('summoned');
-      trigger.classList.add('active');
-      activeSpirits.add(type);
+      isAnimating = true;
+      currentSlide = slideIndex;
+      updateCarousel();
       
-      // Auto-fill with selected text if available
-      if (selectedText && input) {
-        input.value = selectedText;
-      }
-      
-      // Focus input after animation
       setTimeout(() => {
-        input.focus();
-      }, 300);
+        isAnimating = false;
+      }, 400);
     }
 
-    function hideSpirit(type) {
-      const spirit = document.getElementById(`${type}Spirit`);
-      const trigger = document.querySelector(`.trigger-${type}`);
-      
-      spirit.classList.remove('summoned');
-      trigger.classList.remove('active');
-      activeSpirits.delete(type);
-    }
-
-    // Intelligent Text Selection
-    function handleTextSelection() {
-      const selection = window.getSelection();
-      selectedText = selection.toString().trim();
-      
-      if (selectedText.length > 0) {
-        // Highlight selected paragraph
-        const paragraphs = document.querySelectorAll('.text-focus');
-        paragraphs.forEach(p => p.classList.remove('selected'));
-        
-        const range = selection.getRangeAt(0);
-        const container = range.commonAncestorContainer;
-        const paragraph = container.nodeType === Node.TEXT_NODE 
-          ? container.parentElement 
-          : container;
-        
-        if (paragraph.classList.contains('text-focus')) {
-          paragraph.classList.add('selected');
-          
-          // Auto-suggest appropriate helper
-          if (selectedText.length > 50) {
-            // Long text - suggest AI or translation
-            setTimeout(() => showSpirit('ai'), 500);
-          } else if (selectedText.split(' ').length === 1) {
-            // Single word - suggest vocabulary
-            setTimeout(() => showSpirit('vocabulary'), 500);
-          }
-        }
+    // Navigate to next slide
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        goToSlide(currentSlide + 1);
       }
     }
 
-    // Focus Detection System
-    let focusTimeout;
-    function detectFocus() {
-      focusLevel++;
-      
-      if (focusLevel === 3) {
-        document.getElementById('particles').classList.add('focused');
-        document.getElementById('textVessel').classList.add('deep-focus');
+    // Navigate to previous slide
+    function prevSlide() {
+      if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
       }
+    }
+
+    // Touch/Swipe handling
+    function handleTouchStart(e) {
+      if (isAnimating) return;
       
-      if (focusLevel === 5) {
-        document.getElementById('essence').classList.add('visible');
-      }
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      carouselTrack.style.transition = 'none';
+    }
+
+    function handleTouchMove(e) {
+      if (!isDragging || isAnimating) return;
       
-      if (focusLevel === 8) {
-        showQuestionInterface();
-      }
+      e.preventDefault();
+      currentX = e.touches[0].clientX;
+      const deltaX = currentX - startX;
+      const currentTranslate = -currentSlide * (100 / totalSlides);
+      const dragPercent = (deltaX / window.innerWidth) * 50; // Adjust sensitivity
       
-      clearTimeout(focusTimeout);
-      focusTimeout = setTimeout(() => {
-        focusLevel = Math.max(0, focusLevel - 1);
-        if (focusLevel < 3) {
-          document.getElementById('particles').classList.remove('focused');
-          document.getElementById('textVessel').classList.remove('deep-focus');
-        }
-      }, 3000);
+      carouselTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
     }
 
-    // Question Interface
-    function showQuestionInterface() {
-      document.getElementById('questionRealm').classList.add('visible');
-    }
-
-    function hideQuestionInterface() {
-      document.getElementById('questionRealm').classList.remove('visible');
-    }
-
-    function selectOption(index) {
-      const options = document.querySelectorAll('.option');
-      options.forEach((opt, i) => {
-        opt.classList.toggle('selected', i === index);
-      });
+    function handleTouchEnd(e) {
+      if (!isDragging || isAnimating) return;
       
-      userAnswers[currentQuestion] = index;
+      isDragging = false;
+      carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       
-      // Auto-hide after selection
-      setTimeout(() => {
-        hideQuestionInterface();
-      }, 1500);
-    }
-
-    // Helper Functions
-    function translateText() {
-      const result = document.getElementById('translationResult');
-      result.innerHTML = `
-        <strong>Translation:</strong><br>
-        Spanish: La tecnología digital ha transformado fundamentalmente...<br>
-        French: La technologie numérique a fondamentalement transformé...
-      `;
-      result.classList.add('visible');
-    }
-
-    function detectLanguage() {
-      const result = document.getElementById('translationResult');
-      result.innerHTML = `
-        <strong>Language:</strong> English (99% confidence)<br>
-        <strong>Dialect:</strong> American English
-      `;
-      result.classList.add('visible');
-    }
-
-    function defineWord() {
-      const result = document.getElementById('vocabularyResult');
-      result.innerHTML = `
-        <strong>Definition:</strong> The application of scientific knowledge for practical purposes.<br>
-        <strong>Etymology:</strong> Greek <em>tekhnologia</em> (systematic treatment)
-      `;
-      result.classList.add('visible');
-    }
-
-    function addToVocab() {
-      const result = document.getElementById('vocabularyResult');
-      result.innerHTML = `
-        <strong>Added to vocabulary!</strong><br>
-        Total words: 1,247
-      `;
-      result.classList.add('visible');
-    }
-
-    function saveNote() {
-      const result = document.getElementById('notesResult');
-      result.innerHTML = `
-        <strong>Note saved!</strong><br>
-        Added to your collection with timestamp.
-      `;
-      result.classList.add('visible');
-    }
-
-    function summarize() {
-      const result = document.getElementById('notesResult');
-      result.innerHTML = `
-        <strong>Summary:</strong><br>
-        Digital transformation in education brings both opportunities and challenges, requiring thoughtful implementation.
-      `;
-      result.classList.add('visible');
-    }
-
-    function askAI() {
-      const result = document.getElementById('aiResult');
-      result.innerHTML = `
-        <strong>Analysis:</strong><br>
-        This passage presents a balanced view of educational technology, acknowledging both progress and challenges while emphasizing the importance of proper implementation.
-      `;
-      result.classList.add('visible');
-    }
-
-    function explainContext() {
-      const result = document.getElementById('aiResult');
-      result.innerHTML = `
-        <strong>Context:</strong><br>
-        The text follows a problem-solution structure, introducing digital transformation, presenting challenges, then offering evidence for positive outcomes.
-      `;
-      result.classList.add('visible');
-    }
-
-    // Event Listeners
-    document.addEventListener('DOMContentLoaded', () => {
-      createAmbientParticles();
+      const deltaX = currentX - startX;
+      const threshold = 50; // Minimum swipe distance
       
-      // Text selection handler
-      document.addEventListener('mouseup', handleTextSelection);
-      document.addEventListener('touchend', handleTextSelection);
-      
-      // Focus detection
-      document.addEventListener('click', detectFocus);
-      document.addEventListener('scroll', detectFocus);
-      document.addEventListener('keydown', detectFocus);
-      
-      // Keyboard shortcuts for giants
-      document.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key >= '1' && e.key <= '4') {
-          const spirits = ['translation', 'vocabulary', 'notes', 'ai'];
-          toggleSpirit(spirits[parseInt(e.key) - 1]);
-        }
-        
-        if (e.key === 'Escape') {
-          activeSpirits.forEach(spirit => hideSpirit(spirit));
-          hideQuestionInterface();
-        }
-        
-        if (e.key === '?' && e.shiftKey) {
-          showQuestionInterface();
-        }
-      });
-      
-      // Auto-hide spirits when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.helper-zone') && 
-            !e.target.closest('.invisible-trigger')) {
-          // Don't auto-hide on first click, only after spirits are active
-          if (activeSpirits.size > 0 && focusLevel > 5) {
-            setTimeout(() => {
-              activeSpirits.forEach(spirit => hideSpirit(spirit));
-            }, 2000);
-          }
-        }
-      });
-    });
-
-    // Progressive Enhancement for Giants
-    let giantMode = false;
-    document.addEventListener('keydown', (e) => {
-      // Secret giant mode activation
-      if (e.ctrlKey && e.shiftKey && e.key === 'G') {
-        giantMode = !giantMode;
-        
-        if (giantMode) {
-          document.querySelectorAll('.invisible-trigger').forEach(trigger => {
-            trigger.style.opacity = '0.2';
-          });
-          document.getElementById('essence').classList.add('visible');
-          console.log('🔥 Giant mode activated');
+      if (Math.abs(deltaX) > threshold) {
+        if (deltaX > 0 && currentSlide > 0) {
+          // Swipe right - go to previous slide
+          prevSlide();
+        } else if (deltaX < 0 && currentSlide < totalSlides - 1) {
+          // Swipe left - go to next slide
+          nextSlide();
         } else {
-          document.querySelectorAll('.invisible-trigger').forEach(trigger => {
-            trigger.style.opacity = '0';
-          });
-          console.log('🌊 Minimal mode restored');
+          // Snap back to current position
+          updateCarousel();
         }
+      } else {
+        // Snap back to current position
+        updateCarousel();
       }
+    }
+
+    // Mouse events for desktop
+    function handleMouseDown(e) {
+      if (isAnimating) return;
+      
+      startX = e.clientX;
+      isDragging = true;
+      carouselTrack.style.transition = 'none';
+      e.preventDefault();
+    }
+
+    function handleMouseMove(e) {
+      if (!isDragging || isAnimating) return;
+      
+      e.preventDefault();
+      currentX = e.clientX;
+      const deltaX = currentX - startX;
+      const currentTranslate = -currentSlide * (100 / totalSlides);
+      const dragPercent = (deltaX / window.innerWidth) * 50;
+      
+      carouselTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
+    }
+
+    function handleMouseUp(e) {
+      if (!isDragging || isAnimating) return;
+      
+      isDragging = false;
+      carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      
+      const deltaX = currentX - startX;
+      const threshold = 50;
+      
+      if (Math.abs(deltaX) > threshold) {
+        if (deltaX > 0 && currentSlide > 0) {
+          prevSlide();
+        } else if (deltaX < 0 && currentSlide < totalSlides - 1) {
+          nextSlide();
+        } else {
+          updateCarousel();
+        }
+      } else {
+        updateCarousel();
+      }
+    }
+
+    // Event listeners
+    function setupEventListeners() {
+      // Navigation buttons
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
+      
+      // Indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => goToSlide(index));
+      });
+      
+      // Touch events
+      carouselTrack.addEventListener('touchstart', handleTouchStart, { passive: false });
+      carouselTrack.addEventListener('touchmove', handleTouchMove, { passive: false });
+      carouselTrack.addEventListener('touchend', handleTouchEnd);
+      
+      // Mouse events
+      carouselTrack.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          prevSlide();
+        } else if (e.key === 'ArrowRight') {
+          nextSlide();
+        } else if (e.key >= '1' && e.key <= '8') {
+          goToSlide(parseInt(e.key) - 1);
+        }
+      });
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      createConstellation();
+      setupEventListeners();
+      updateCarousel();
     });
   </script>
 </body>
