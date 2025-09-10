@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTUITY - Reading Part 5</title>
+  <title>INTUITY - Cambridge B2 Reading Part 5 Test</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -183,20 +183,29 @@
     }
 
     .reading-content {
-      line-height: 1.6;
+      line-height: 1.7;
       font-size: 1rem;
       color: var(--text-primary);
       text-align: justify;
+      max-width: 100%;
     }
 
-    .reading-placeholder {
-      color: var(--text-secondary);
-      font-style: italic;
+    .reading-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
       text-align: center;
-      padding: 40px 20px;
-      border: 2px dashed var(--card-border);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 24px;
+      color: var(--accent-gold);
+    }
+
+    .reading-paragraph {
+      margin-bottom: 16px;
+      text-indent: 1.5em;
+    }
+
+    .reading-paragraph:first-of-type {
+      text-indent: 0;
     }
 
     .highlighted-text {
@@ -206,7 +215,7 @@
       transition: all 0.3s ease;
     }
 
-    /* Question Area - Compressed */
+    /* Question Area - Compressed to 180px */
     .question-container {
       height: 180px;
       margin: 8px 16px;
@@ -220,7 +229,7 @@
 
     .question-track {
       display: flex;
-      width: 600%; /* 6 questions × 100% */
+      width: 800%; /* 8 questions × 100% */
       height: 100%;
       transition: transform 0.3s ease-out;
       will-change: transform;
@@ -231,7 +240,7 @@
     }
 
     .question-slide {
-      width: 16.666%; /* 100% / 6 questions */
+      width: 12.5%; /* 100% / 8 questions */
       height: 100%;
       flex-shrink: 0;
       padding: 16px;
@@ -243,7 +252,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-shrink: 0;
     }
 
@@ -259,17 +268,17 @@
     }
 
     .question-text {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-primary);
-      margin-bottom: 12px;
-      line-height: 1.4;
+      margin-bottom: 10px;
+      line-height: 1.3;
       flex-shrink: 0;
     }
 
     .options-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       flex-grow: 1;
     }
 
@@ -277,14 +286,15 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       border-radius: 6px;
-      padding: 8px 12px;
+      padding: 6px 10px;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 0.85rem;
-      line-height: 1.3;
+      font-size: 0.8rem;
+      line-height: 1.2;
       display: flex;
       align-items: center;
-      min-height: 36px;
+      min-height: 28px;
+      max-height: 32px;
     }
 
     .option:hover {
@@ -316,10 +326,16 @@
       min-width: 16px;
     }
 
+    .option-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     /* Question Navigation */
     .question-nav {
       position: absolute;
-      bottom: 8px;
+      bottom: 6px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -328,8 +344,8 @@
     }
 
     .question-indicator {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.3);
       cursor: pointer;
@@ -398,12 +414,19 @@
       }
 
       .question-container {
-        height: 160px;
+        height: 170px;
         margin: 8px 12px;
       }
 
       .question-slide {
         padding: 12px;
+      }
+
+      .option {
+        font-size: 0.75rem;
+        padding: 5px 8px;
+        min-height: 26px;
+        max-height: 30px;
       }
     }
 
@@ -431,8 +454,15 @@
       }
 
       .question-container {
-        height: 150px;
+        height: 160px;
         margin: 6px 8px;
+      }
+
+      .option {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+        min-height: 24px;
+        max-height: 28px;
       }
     }
   </style>
@@ -460,9 +490,38 @@
     <!-- Reading Passage Area -->
     <div class="reading-container">
       <div class="reading-content">
-        <div class="reading-placeholder">
-          📖 Reading passage will appear here<br>
-          <small>Full Cambridge B2 Part 5 text for comprehension</small>
+        <div class="reading-title">There's no stopping her!</div>
+        
+        <div class="reading-paragraph">
+          Noreen Hannington, a sixty-three-year-old grandmother of five, arrives at the Tyre and Wheel Company in North London at 8 a.m. every morning. She puts on a grease-stained apron, rolls up her sleeves and gets ready for the day's work.
+        </div>
+
+        <div class="reading-paragraph">
+          The first customer pulls up in an old van. It has a flat tyre and the driver was lucky to make it to the garage. Noreen puts on her rubber gloves and gets down to work. She casually pulls off the wheel, swings it onto the work bench with one hand and takes it apart. 'Here's your problem, sir,' she announces, pointing at a tiny hole in the tyre. Right now, he couldn't care less about that, since what he feels is more serious: a fast-decreasing sense of his own worth. At least his mates haven't come to witness him being rescued by a sweet-faced granny!
+        </div>
+
+        <div class="reading-paragraph">
+          Why is Noreen in this line of work, anyway? It's a family business and when Noreen's husband died, she decided to keep it going for her two sons, Bill and Fred, then aged only seventeen and fifteen. Before that, her husband had let her watch what went on in the garage, but she had never been allowed to lift a finger. Initially, she doubted her ability to make a go of it, but somehow she managed, and although the boys are now grown up, has never got round to handing over.
+        </div>
+
+        <div class="reading-paragraph">
+          Now the business has expanded to include not only the sons but daughters-in-law, too. With Noreen in charge, it all runs smoothly. 'Bill handles anything mechanical. Fred does electrical repairs, while I fix flat tyres and anything else to do with wheels.' She waves at the new computer: 'I also do the accounts. They keep on at me to think modern, but we don't need this.' Bill jokes: 'We don't need you, but you're still here!'
+        </div>
+
+        <div class="reading-paragraph">
+          Noreen is indeed still around, lifting well over twelve kilogrammes in weight up to twenty times a day, which is rather surprising, to say the least. As Bill says, 'Tyre changing's hard and she shouldn't be doing it.' Noreen pulls a face and replies, 'I'll stop when I'm eighty-five. Anyway, it was far worse in the old days, when there was less equipment.' 'And before that, you were repairing the horses and carts,' jokes Bill. We all laugh at that one.
+        </div>
+
+        <div class="reading-paragraph">
+          Suddenly it all becomes obvious to me – these friendly jokes create an environment that Noreen loves and, despite her advanced age, she wants to stick it out, even if the work is hard at times. So much so, that on the rare occasions when she does go away, she can't wait to return. 'I have just had a wonderful holiday on board a cruise ship. Going to sea made sure I couldn't come running back to the garage after a few hours! But walking back into the garage meant coming home to me,' she says fondly. She stops talking for a moment to check the drinks machine. 'It's out of tea,' she shouts. Everybody sighs; on her first day back at work, the boss is making her presence felt.
+        </div>
+
+        <div class="reading-paragraph">
+          Surely all this heavy work must affect her health though? Noreen claims that it doesn't, though her daughter-in-law mentions recent back trouble. 'That had nothing to do with the tyres! It was when I was doing those stupid roof tiles,' says Noreen. 'We rebuilt the garage and added a first floor. It was quite a nice change to be a labourer for a while, actually.'
+        </div>
+
+        <div class="reading-paragraph">
+          Noreen is a delightful woman, who clearly intends to be part of the business for a long time yet.
         </div>
       </div>
     </div>
@@ -471,176 +530,234 @@
     <div class="question-container" id="questionContainer">
       <div class="question-track" id="questionTrack">
         
-        <!-- Question 1 -->
+        <!-- Question 7 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 1</div>
-            <div class="question-progress">1/6</div>
+            <div class="question-number">Question 7</div>
+            <div class="question-progress">1/8</div>
           </div>
           <div class="question-text">
-            What is the writer's main purpose in the first paragraph?
+            How does the van driver feel after getting help from Noreen?
           </div>
           <div class="options-container">
-            <div class="option" data-question="1" data-option="A">
+            <div class="option" data-question="7" data-option="A">
               <span class="option-label">A</span>
-              <span>To introduce a controversial topic</span>
+              <span class="option-text">impressed by the way she works</span>
             </div>
-            <div class="option" data-question="1" data-option="B">
+            <div class="option" data-question="7" data-option="B">
               <span class="option-label">B</span>
-              <span>To provide historical context</span>
+              <span class="option-text">embarrassed that he needed it</span>
             </div>
-            <div class="option" data-question="1" data-option="C">
+            <div class="option" data-question="7" data-option="C">
               <span class="option-label">C</span>
-              <span>To explain a personal experience</span>
+              <span class="option-text">relieved at finding it in time</span>
             </div>
-            <div class="option" data-question="1" data-option="D">
+            <div class="option" data-question="7" data-option="D">
               <span class="option-label">D</span>
-              <span>To outline future developments</span>
+              <span class="option-text">unconvinced by her advice</span>
             </div>
           </div>
         </div>
 
-        <!-- Question 2 -->
+        <!-- Question 8 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 2</div>
-            <div class="question-progress">2/6</div>
+            <div class="question-number">Question 8</div>
+            <div class="question-progress">2/8</div>
           </div>
           <div class="question-text">
-            According to the text, what surprised the researchers?
+            Why did Noreen take over the running of the business?
           </div>
           <div class="options-container">
-            <div class="option" data-question="2" data-option="A">
+            <div class="option" data-question="8" data-option="A">
               <span class="option-label">A</span>
-              <span>The speed of the changes</span>
+              <span class="option-text">to fulfil a promise to her husband</span>
             </div>
-            <div class="option" data-question="2" data-option="B">
+            <div class="option" data-question="8" data-option="B">
               <span class="option-label">B</span>
-              <span>The lack of public interest</span>
+              <span class="option-text">to stop her sons fighting over it</span>
             </div>
-            <div class="option" data-question="2" data-option="C">
+            <div class="option" data-question="8" data-option="C">
               <span class="option-label">C</span>
-              <span>The complexity of the problem</span>
+              <span class="option-text">to make sure it stayed in the family</span>
             </div>
-            <div class="option" data-question="2" data-option="D">
+            <div class="option" data-question="8" data-option="D">
               <span class="option-label">D</span>
-              <span>The government's response</span>
+              <span class="option-text">to prove that she could manage it</span>
             </div>
           </div>
         </div>
 
-        <!-- Question 3 -->
+        <!-- Question 9 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 3</div>
-            <div class="question-progress">3/6</div>
+            <div class="question-number">Question 9</div>
+            <div class="question-progress">3/8</div>
           </div>
           <div class="question-text">
-            The word 'significant' in line 15 is closest in meaning to...
+            'Keep on at' in line 34 describes a way of
           </div>
           <div class="options-container">
-            <div class="option" data-question="3" data-option="A">
+            <div class="option" data-question="9" data-option="A">
               <span class="option-label">A</span>
-              <span>important</span>
+              <span class="option-text">trying to make someone laugh.</span>
             </div>
-            <div class="option" data-question="3" data-option="B">
+            <div class="option" data-question="9" data-option="B">
               <span class="option-label">B</span>
-              <span>obvious</span>
+              <span class="option-text">trying to accept something.</span>
             </div>
-            <div class="option" data-question="3" data-option="C">
+            <div class="option" data-question="9" data-option="C">
               <span class="option-label">C</span>
-              <span>recent</span>
+              <span class="option-text">trying to convince someone.</span>
             </div>
-            <div class="option" data-question="3" data-option="D">
+            <div class="option" data-question="9" data-option="D">
               <span class="option-label">D</span>
-              <span>final</span>
+              <span class="option-text">trying to make something easier.</span>
             </div>
           </div>
         </div>
 
-        <!-- Question 4 -->
+        <!-- Question 10 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 4</div>
-            <div class="question-progress">4/6</div>
+            <div class="question-number">Question 10</div>
+            <div class="question-progress">4/8</div>
           </div>
           <div class="question-text">
-            What can be inferred about the author's attitude?
+            The writer finds it strange that
           </div>
           <div class="options-container">
-            <div class="option" data-question="4" data-option="A">
+            <div class="option" data-question="10" data-option="A">
               <span class="option-label">A</span>
-              <span>Optimistic about future changes</span>
+              <span class="option-text">Bill allows his mother to work at her age.</span>
             </div>
-            <div class="option" data-question="4" data-option="B">
+            <div class="option" data-question="10" data-option="B">
               <span class="option-label">B</span>
-              <span>Concerned about current trends</span>
+              <span class="option-text">Noreen knows exactly when she will retire.</span>
             </div>
-            <div class="option" data-question="4" data-option="C">
+            <div class="option" data-question="10" data-option="C">
               <span class="option-label">C</span>
-              <span>Neutral towards the topic</span>
+              <span class="option-text">Bill doesn't find a way to help his mother.</span>
             </div>
-            <div class="option" data-question="4" data-option="D">
+            <div class="option" data-question="10" data-option="D">
               <span class="option-label">D</span>
-              <span>Critical of previous research</span>
+              <span class="option-text">Noreen does a job that is unsuitable for her.</span>
             </div>
           </div>
         </div>
 
-        <!-- Question 5 -->
+        <!-- Question 11 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 5</div>
-            <div class="question-progress">5/6</div>
+            <div class="question-number">Question 11</div>
+            <div class="question-progress">5/8</div>
           </div>
           <div class="question-text">
-            Which statement best summarizes the final paragraph?
+            Why, in the writer's opinion, does Noreen want to carry on working at the garage?
           </div>
           <div class="options-container">
-            <div class="option" data-question="5" data-option="A">
+            <div class="option" data-question="11" data-option="A">
               <span class="option-label">A</span>
-              <span>Solutions are being implemented</span>
+              <span class="option-text">She feels that working keeps her young.</span>
             </div>
-            <div class="option" data-question="5" data-option="B">
+            <div class="option" data-question="11" data-option="B">
               <span class="option-label">B</span>
-              <span>More research is needed</span>
+              <span class="option-text">She enjoys the working atmosphere.</span>
             </div>
-            <div class="option" data-question="5" data-option="C">
+            <div class="option" data-question="11" data-option="C">
               <span class="option-label">C</span>
-              <span>The problem is getting worse</span>
+              <span class="option-text">She is genuinely interested in the work.</span>
             </div>
-            <div class="option" data-question="5" data-option="D">
+            <div class="option" data-question="11" data-option="D">
               <span class="option-label">D</span>
-              <span>Public awareness is increasing</span>
+              <span class="option-text">She looks forward to more expensive holidays.</span>
             </div>
           </div>
         </div>
 
-        <!-- Question 6 -->
+        <!-- Question 12 -->
         <div class="question-slide">
           <div class="question-header">
-            <div class="question-number">Question 6</div>
-            <div class="question-progress">6/6</div>
+            <div class="question-number">Question 12</div>
+            <div class="question-progress">6/8</div>
           </div>
           <div class="question-text">
-            The main theme of the passage is...
+            Why do Noreen's family sigh when she mentions the problem with the drinks machine?
           </div>
           <div class="options-container">
-            <div class="option" data-question="6" data-option="A">
+            <div class="option" data-question="12" data-option="A">
               <span class="option-label">A</span>
-              <span>technological advancement</span>
+              <span class="option-text">They don't feel responsible for it.</span>
             </div>
-            <div class="option" data-question="6" data-option="B">
+            <div class="option" data-question="12" data-option="B">
               <span class="option-label">B</span>
-              <span>environmental protection</span>
+              <span class="option-text">They wish they had noticed it first.</span>
             </div>
-            <div class="option" data-question="6" data-option="C">
+            <div class="option" data-question="12" data-option="C">
               <span class="option-label">C</span>
-              <span>social development</span>
+              <span class="option-text">They realise that she's in control again.</span>
             </div>
-            <div class="option" data-question="6" data-option="D">
+            <div class="option" data-question="12" data-option="D">
               <span class="option-label">D</span>
-              <span>economic growth</span>
+              <span class="option-text">They feel that she is being unreasonable.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 13</div>
+            <div class="question-progress">7/8</div>
+          </div>
+          <div class="question-text">
+            When Noreen hurt her back, she
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="13" data-option="A">
+              <span class="option-label">A</span>
+              <span class="option-text">wasn't able to go on with the building work.</span>
+            </div>
+            <div class="option" data-question="13" data-option="B">
+              <span class="option-label">B</span>
+              <span class="option-text">missed her usual job of repairing the tyres.</span>
+            </div>
+            <div class="option" data-question="13" data-option="C">
+              <span class="option-label">C</span>
+              <span class="option-text">annoyed her daughter-in-law.</span>
+            </div>
+            <div class="option" data-question="13" data-option="D">
+              <span class="option-label">D</span>
+              <span class="option-text">blamed her injury on having to fix the tiles.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-slide">
+          <div class="question-header">
+            <div class="question-number">Question 14</div>
+            <div class="question-progress">8/8</div>
+          </div>
+          <div class="question-text">
+            Which phrase best describes the writer's view of Noreen?
+          </div>
+          <div class="options-container">
+            <div class="option" data-question="14" data-option="A">
+              <span class="option-label">A</span>
+              <span class="option-text">a determined woman</span>
+            </div>
+            <div class="option" data-question="14" data-option="B">
+              <span class="option-label">B</span>
+              <span class="option-text">a demanding boss</span>
+            </div>
+            <div class="option" data-question="14" data-option="C">
+              <span class="option-label">C</span>
+              <span class="option-text">a loving grandmother</span>
+            </div>
+            <div class="option" data-question="14" data-option="D">
+              <span class="option-label">D</span>
+              <span class="option-text">a co-operative worker</span>
             </div>
           </div>
         </div>
@@ -655,6 +772,8 @@
         <div class="question-indicator" data-question="3"></div>
         <div class="question-indicator" data-question="4"></div>
         <div class="question-indicator" data-question="5"></div>
+        <div class="question-indicator" data-question="6"></div>
+        <div class="question-indicator" data-question="7"></div>
       </div>
     </div>
   </div>
@@ -662,7 +781,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="score-display" id="scoreDisplay">
-      Score: 0/6
+      Score: 0/8
     </div>
     <button class="check-answers-btn" id="checkAnswersBtn">
       Check Answers
@@ -672,9 +791,9 @@
   <script>
     // Global state
     let currentQuestion = 0;
-    const totalQuestions = 6;
+    const totalQuestions = 8;
     let userAnswers = {};
-    let correctAnswers = { 1: 'B', 2: 'A', 3: 'A', 4: 'B', 5: 'D', 6: 'B' }; // Example answers
+    let correctAnswers = { 7: 'B', 8: 'C', 9: 'C', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'A' }; // Example answers
     let answersChecked = false;
     let startX = 0;
     let isDragging = false;
@@ -755,7 +874,7 @@
       checkAnswersBtn.textContent = 'Answers Checked';
       
       // Mark all options
-      for (let questionNum = 1; questionNum <= totalQuestions; questionNum++) {
+      for (let questionNum = 7; questionNum <= 14; questionNum++) {
         const questionSlide = document.querySelector(`[data-question="${questionNum}"]`).closest('.question-slide');
         const options = questionSlide.querySelectorAll('.option');
         
@@ -772,7 +891,7 @@
         });
       }
       
-      // Highlight text passages (placeholder)
+      // Highlight text passages (example)
       highlightTextPassages();
       
       // Final score update
@@ -781,16 +900,25 @@
 
     // Highlight text passages where answers were found
     function highlightTextPassages() {
-      // This would highlight relevant parts of the reading passage
-      // For now, just a placeholder implementation
+      // Example highlighting for demonstration
       const readingContent = document.querySelector('.reading-content');
-      if (readingContent.querySelector('.reading-placeholder')) {
-        readingContent.innerHTML = `
-          <div class="reading-placeholder">
-            📖 Reading passage with <span class="highlighted-text">highlighted answers</span> will appear here<br>
-            <small>Text sections where answers were found would be highlighted in lime</small>
-          </div>
-        `;
+      const paragraphs = readingContent.querySelectorAll('.reading-paragraph');
+      
+      // Highlight key phrases that relate to answers
+      if (paragraphs.length > 1) {
+        const paragraph2 = paragraphs[1];
+        paragraph2.innerHTML = paragraph2.innerHTML.replace(
+          'fast-decreasing sense of his own worth',
+          '<span class="highlighted-text">fast-decreasing sense of his own worth</span>'
+        );
+      }
+      
+      if (paragraphs.length > 2) {
+        const paragraph3 = paragraphs[2];
+        paragraph3.innerHTML = paragraph3.innerHTML.replace(
+          'keep it going for her two sons',
+          '<span class="highlighted-text">keep it going for her two sons</span>'
+        );
       }
     }
 
@@ -808,7 +936,7 @@
       const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       const deltaX = currentX - startX;
       const currentTranslate = -currentQuestion * (100 / totalQuestions);
-      const dragPercent = (deltaX / questionContainer.offsetWidth) * 16.666; // 16.666% per slide
+      const dragPercent = (deltaX / questionContainer.offsetWidth) * 12.5; // 12.5% per slide
       
       questionTrack.style.transform = `translateX(${currentTranslate + dragPercent}%)`;
     }
@@ -876,7 +1004,7 @@
           goToQuestion(currentQuestion - 1);
         } else if (e.key === 'ArrowRight' && currentQuestion < totalQuestions - 1) {
           goToQuestion(currentQuestion + 1);
-        } else if (e.key >= '1' && e.key <= '6') {
+        } else if (e.key >= '1' && e.key <= '8') {
           goToQuestion(parseInt(e.key) - 1);
         }
       });
